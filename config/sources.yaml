@@ -1,0 +1,51 @@
+# Every file the pipeline downloads. sha256 pins the exact file we parsed:
+# if gov.uk replaces a file, the pipeline stops instead of silently changing results.
+# `published` is the "Last updated" date printed on each file's Cover sheet.
+rtfo:
+  source_page: https://www.gov.uk/government/statistical-data-sets/renewable-transport-fuel-obligation-rtfo-statistics-data-tables
+  files:
+    - release: 2024-final
+      status: final
+      published: 2026-02-12  # revised file; Cover sheet "Last updated"
+      url: https://assets.publishing.service.gov.uk/media/698eedff43eb912f2e15b3a2/2024-final-rf-01-rtfo-tables-revised.ods
+      sha256: 79fa9c6db3ebd81af41b659c7b02e6d69df391b3018d62a3aa809e1971c0ab34
+      # Inconsistencies in DfT's own file, found by the totals checks in desk/rtfo.py.
+      # Revoked/General 2023 is 72.973673 here but 73.009097 in later releases, which
+      # makes the components add up to the published total of 73.925343.
+      known_mismatches:
+        - "RF_0103 Revoked 2023: components sum to 73.889919, published total is 73.925343"
+    - release: 2025-fifth-provisional
+      status: provisional
+      published: 2026-07-23
+      url: https://assets.publishing.service.gov.uk/media/6a5e01bc9e2827ee5f6d08b1/2025-fifth-provisional-rf-01-rtfo-tables.ods
+      sha256: 788b7c4c07e1b65fdca4f31e8859a753a186bca34ee53f37d679e192511d36c7
+    - release: 2026-first-provisional
+      status: provisional
+      published: 2026-09-17
+      url: https://assets.publishing.service.gov.uk/media/6aa8fe3c72d74352d1ff2f6c/2026-first-provisional-rf-01-rtfo-tables.ods
+      sha256: eb964cbb796573386d07773f24424e76a39da19f15a7b4841f8f6cfc39b25ce7
+
+# EEX publishes one workbook per year. The 2012-2025 archive is static and pinned. The
+# current-year workbook gains a row after every auction, so it is re-downloaded on every
+# run and not pinned (its checksum is still recorded in data/provenance.json).
+eex:
+  source_page: https://www.eex.com/en/market-data/market-data-hub/environmentals-data
+  files:
+    - release: history-2012-2025
+      kind: zip
+      published: 2026-01-07
+      url: https://www.eex.com/fileadmin/EEX/Downloads/Markets/Environmentals/EUA_Emission_Spot_Primary_Market_Auction_Report/Archive_Reports/emission-spot-primary-market-auction-report-2012-2025-data.zip
+      sha256: c3ff6ffaaf348cbd17f61d4726fdbd45a7ead089a0006568a490dd63bb080231
+    - release: current-year-2026
+      kind: xlsx
+      published: null  # updated after every auction
+      url: https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx
+      sha256: null
+      refresh: true
+
+# ReFuels states the month's average RTFC price in a press release; there is no data file.
+# The CSV is curated by hand (one row per release, with URL and the exact sentence) and
+# validated by desk.refuels on every run.
+refuels:
+  manual_file: data/manual/refuels_rtfc_prices.csv
+  source_page: https://refuels.com/news/

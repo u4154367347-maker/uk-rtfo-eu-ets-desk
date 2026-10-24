@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uk-rtfo-eu-ets-desk"
+version = "0.1.0"
+description = "UK RTFO and EU ETS compliance desk: public data pipelines, market monitors and a weekly broker note."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "pandas>=2.2",
+    "pyarrow>=15",
+    "odfpy>=1.4",
+    "openpyxl>=3.1",
+    "xlrd>=2.0.1",
+    "pyyaml>=6",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "sources: checks on the full downloaded source files (run `make data` first)",
+]

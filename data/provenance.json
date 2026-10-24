@@ -1,0 +1,76 @@
+{
+  "rtfo": [
+    {
+      "url": "https://assets.publishing.service.gov.uk/media/698eedff43eb912f2e15b3a2/2024-final-rf-01-rtfo-tables-revised.ods",
+      "file": "data/raw/rtfo/2024-final-rf-01-rtfo-tables-revised.ods",
+      "sha256": "79fa9c6db3ebd81af41b659c7b02e6d69df391b3018d62a3aa809e1971c0ab34",
+      "bytes": 548085,
+      "retrieved_at": "2026-10-20T07:33:31+00:00",
+      "release": "2024-final",
+      "source_page": "https://www.gov.uk/government/statistical-data-sets/renewable-transport-fuel-obligation-rtfo-statistics-data-tables",
+      "published": "2026-02-12",
+      "known_mismatches": [
+        "RF_0103 Revoked 2023: components sum to 73.889919, published total is 73.925343"
+      ]
+    },
+    {
+      "url": "https://assets.publishing.service.gov.uk/media/6a5e01bc9e2827ee5f6d08b1/2025-fifth-provisional-rf-01-rtfo-tables.ods",
+      "file": "data/raw/rtfo/2025-fifth-provisional-rf-01-rtfo-tables.ods",
+      "sha256": "788b7c4c07e1b65fdca4f31e8859a753a186bca34ee53f37d679e192511d36c7",
+      "bytes": 107884,
+      "retrieved_at": "2026-10-20T07:33:31+00:00",
+      "release": "2025-fifth-provisional",
+      "source_page": "https://www.gov.uk/government/statistical-data-sets/renewable-transport-fuel-obligation-rtfo-statistics-data-tables",
+      "published": "2026-07-23",
+      "known_mismatches": []
+    },
+    {
+      "url": "https://assets.publishing.service.gov.uk/media/6aa8fe3c72d74352d1ff2f6c/2026-first-provisional-rf-01-rtfo-tables.ods",
+      "file": "data/raw/rtfo/2026-first-provisional-rf-01-rtfo-tables.ods",
+      "sha256": "eb964cbb796573386d07773f24424e76a39da19f15a7b4841f8f6cfc39b25ce7",
+      "bytes": 51653,
+      "retrieved_at": "2026-10-20T07:33:31+00:00",
+      "release": "2026-first-provisional",
+      "source_page": "https://www.gov.uk/government/statistical-data-sets/renewable-transport-fuel-obligation-rtfo-statistics-data-tables",
+      "published": "2026-09-17",
+      "known_mismatches": []
+    }
+  ],
+  "eex": [
+    {
+      "url": "https://www.eex.com/fileadmin/EEX/Downloads/Markets/Environmentals/EUA_Emission_Spot_Primary_Market_Auction_Report/Archive_Reports/emission-spot-primary-market-auction-report-2012-2025-data.zip",
+      "file": "data/raw/eex/emission-spot-primary-market-auction-report-2012-2025-data.zip",
+      "sha256": "c3ff6ffaaf348cbd17f61d4726fdbd45a7ead089a0006568a490dd63bb080231",
+      "bytes": 784392,
+      "retrieved_at": "2026-10-24T13:43:41+00:00",
+      "release": "history-2012-2025",
+      "source_page": "https://www.eex.com/en/market-data/market-data-hub/environmentals-data",
+      "published": "2026-01-07",
+      "pinned": true,
+      "known_mismatches": []
+    },
+    {
+      "url": "https://public.eex-group.com/eex/eua-auction-report/emission-spot-primary-market-auction-report-2026-data.xlsx",
+      "file": "data/raw/eex/emission-spot-primary-market-auction-report-2026-data.xlsx",
+      "sha256": "01f16d036f19534660a3d1cee7ba6e02d9c351e3166d96509ebf0b94d05aa8a5",
+      "bytes": 75844,
+      "retrieved_at": "2026-10-24T13:43:41+00:00",
+      "release": "current-year-2026",
+      "source_page": "https://www.eex.com/en/market-data/market-data-hub/environmentals-data",
+      "published": null,
+      "pinned": false,
+      "known_mismatches": []
+    }
+  ],
+  "refuels": [
+    {
+      "file": "data/manual/refuels_rtfc_prices.csv",
+      "sha256": "25175104d4cf04bdcb82fd28b4ffc2f51fbb57a57aeeca50f5319e0a4fd87305",
+      "rows": 11,
+      "first_month": "2025-09",
+      "last_month": "2026-08",
+      "source_page": "https://refuels.com/news/",
+      "curated_by_hand": true
+    }
+  ]
+}
