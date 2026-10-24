@@ -10,3 +10,8 @@ data:
 
 test:
 	$(PYTHON) -m pytest -q
+
+.PHONY: monitor
+monitor:
+	$(PYTHON) -m desk.monitor
+	$(PYTHON) -m desk.charts
