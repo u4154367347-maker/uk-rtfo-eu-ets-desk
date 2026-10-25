@@ -8,8 +8,11 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
+import yaml
 
+from desk import backtest
 from desk.io import REPO_ROOT
 from desk.monitor import OUTPUT_PATH, REFUELS_CSV
 
@@ -56,11 +59,65 @@ def build_chart(monitor: dict, prices: pd.DataFrame):
     return fig
 
 
+BACKTEST_CHART_PATH = REPO_ROOT / "docs" / "eua_backtest.png"
+
+
+def build_backtest_chart(result: dict, series: pd.DataFrame, cfg: dict):
+    """Out-of-sample cumulative net return (headline cost) and what the signal says about the next step."""
+    ps = cfg["periods"]["out_of_sample"]
+    head = cfg["costs"]["headline_bps"]
+    w = series[(series["date"] >= str(ps["start"])) & series["step_return"].notna()]
+    ret = w["step_return"].to_numpy()
+    primary = backtest.positions(series, "long_flat", "primary").loc[w.index].to_numpy()
+    diagnostic = backtest.positions(series, "long_flat", "diagnostic").loc[w.index].to_numpy()
+    curves = [("Always long", np.ones(len(ret)), "#777777", "-"),
+              ("Signal, tradable (enter next auction)", primary, "#1b6ca8", "-"),
+              ("Signal, enter at the auction price (not tradable)", diagnostic, "#d95f02", "--")]
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.6), gridspec_kw={"width_ratios": [1.3, 1]})
+    for label, pos, colour, style in curves:
+        ax1.plot(w["date"], np.cumsum(backtest.run(ret, pos, head)), label=label, color=colour, ls=style, lw=1.6)
+    ax1.axhline(0, color="#444", lw=0.8)
+    ax1.set_ylabel(f"cumulative net log return ({head} bp per trade)")
+    ax1.set_title("EUA auction signal, out of sample", loc="left", fontsize=11)
+    ax1.legend(fontsize=8, frameon=False, loc="upper left", bbox_to_anchor=(0.0, -0.1))
+
+    oos = result["out_of_sample"]["results"]
+    labels, strong, weak, pvals = [], [], [], []
+    for key, name in [("primary/long_flat", "Tradable:\nnext auction onward"), ("diagnostic/long_flat", "Not tradable:\nfrom the auction price")]:
+        r = oos[key]
+        labels.append(name)
+        strong.append(r["mean_return_when_strong"] * 1e4)
+        weak.append(r["mean_return_when_not_strong"] * 1e4)
+        pvals.append(r["by_cost_bps"][str(head)]["permutation_p_one_sided"])
+    x = np.arange(len(labels))
+    ax2.bar(x - 0.18, strong, 0.36, label="after strong demand", color="#1b6ca8")
+    ax2.bar(x + 0.18, weak, 0.36, label="otherwise", color="#bbbbbb")
+    for i, p in enumerate(pvals):
+        ax2.text(i, max(strong[i], weak[i]) + 2, f"permutation p = {p:.3f}", ha="center", fontsize=8)
+    ax2.axhline(0, color="#444", lw=0.8)
+    ax2.set_xticks(x, labels, fontsize=9)
+    ax2.set_ylabel("mean return per auction step (bp, gross)")
+    ax2.set_title("Return after strong vs other demand", loc="left", fontsize=11)
+    ax2.legend(fontsize=8, frameon=False, loc="lower left")
+    for ax in (ax1, ax2):
+        ax.spines[["top", "right"]].set_visible(False)
+    fig.text(0.01, -0.14, "Returns are changes between consecutive EU auction clearing prices, not secondary-market returns. "
+             "Protocol fixed before results: config/backtest.yaml.", fontsize=7.5, color="#555")
+    fig.tight_layout()
+    return fig
+
+
 def main() -> None:
     monitor = json.loads(OUTPUT_PATH.read_text())
     CHART_PATH.parent.mkdir(parents=True, exist_ok=True)
     build_chart(monitor, pd.read_csv(REFUELS_CSV)).savefig(CHART_PATH, dpi=150, bbox_inches="tight")
     print(f"wrote {CHART_PATH.relative_to(REPO_ROOT)}")
+    cfg = yaml.safe_load(backtest.CONFIG_PATH.read_text())
+    series = backtest.add_signal(backtest.load_series(pd.read_parquet(backtest.AUCTIONS_PATH)), cfg["signal"]["lookback_auctions"])
+    result = json.loads(backtest.OUTPUT_PATH.read_text())
+    build_backtest_chart(result, series, cfg).savefig(BACKTEST_CHART_PATH, dpi=150, bbox_inches="tight")
+    print(f"wrote {BACKTEST_CHART_PATH.relative_to(REPO_ROOT)}")
 
 
 if __name__ == "__main__":
