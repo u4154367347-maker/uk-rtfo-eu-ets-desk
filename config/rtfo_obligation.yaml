@@ -1,0 +1,14 @@
+# RTFO obligation parameters used by desk/monitor.py.
+# Source: DfT "RTFO Compliance Guidance 2026", Table 1 and paras 3.12, 3.17, 3.24
+# (https://assets.publishing.service.gov.uk/media/69a80c033b5b78231d1a9b78/dft-rtfo-compliance-guidance-26.pdf).
+# Obligation percentages apply to the "obligated amount": fossil fuel plus non-sustainable eligible
+# fuel, in litre equivalents. The 2026 row was checked against the guidance on 19 Oct 2026; the
+# 2024 and 2025 rows were read on 24 Oct 2026 through a web-fetch summary of the same table and
+# confirmed against the PDF by the repo owner on 25 Oct 2026.
+obligation_pct:        # percent of the obligated amount
+  2024: {main: 13.563, development: 1.379}
+  2025: {main: 14.054, development: 1.619}
+  2026: {main: 14.552, development: 1.863}
+buy_out_pence: {main: 50, development: 80}   # per RTFC / per dRTFC not redeemed
+carry_over_max_share: 0.25                   # of the obligation, from the preceding period only
+crop_cap_pct: 3.00                           # relevant-crop cap for 2026 (recorded, not modelled)

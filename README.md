@@ -6,8 +6,13 @@ Public-data monitors for two compliance markets, built the way a commodities des
 2. **EU ETS auction signal**: does EEX primary auction demand say anything about the next auction price, once costs are included?
 3. **Broker note**: a one-page note written only from numbers this repo computed.
 
-> **Status:** work in progress (v1 target: 9 Nov 2026). Done so far: RTFO, EEX auction and RTFC price-proxy data pipelines (Week 1).
-> The headline result and chart will go here once the monitor is built. No result is shown before it exists.
+> **Status:** work in progress (v1 target: 9 Nov 2026). Done so far: RTFO, EEX auction and RTFC price-proxy data pipelines, and the RTFO balance monitor. The EUA auction backtest and the broker note are not built yet.
+
+## Headline: RTFO balance monitor
+
+![RTFO monitor](docs/rtfo_monitor.png)
+
+On the certificates issued so far (Jan to May 2026), main-type RTFCs look short: -9% to -30% of the formula obligation. The price (19.1p in August 2026, 38% of the 50p cap, below a year earlier) does not look like a market that short, so either issuance is lagging or the obligation is lower than the formula implies, and the public data cannot tell which. DfT's own 2024 balance table also has an unexplained 328m-certificate gap. Method, assumptions and what would change the view: [docs/rtfo_monitor.md](docs/rtfo_monitor.md). Run it with `make monitor`.
 
 ## How to run
 
@@ -83,6 +88,10 @@ src/desk/rtfo.py        RF_01 parsers with totals checks
 src/desk/eex.py         EEX auction parser with per-auction checks
 src/desk/refuels.py     validation of the hand-curated RTFC price CSV
 src/desk/pipeline.py    `make data` entry point
+src/desk/monitor.py     RTFO balance monitor (`make monitor`)
+src/desk/charts.py      headline chart
+config/rtfo_obligation.yaml  obligation percentages and buy-out prices (with source)
+docs/                   monitor write-up and chart
 data/manual/            hand-curated inputs (ReFuels RTFC prices)
 data/processed/         cleaned parquet files (committed)
 data/provenance.json    what was downloaded, when, and its checksum
