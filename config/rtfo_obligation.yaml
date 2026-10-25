@@ -4,7 +4,7 @@
 # Obligation percentages apply to the "obligated amount": fossil fuel plus non-sustainable eligible
 # fuel, in litre equivalents. The 2026 row was checked against the guidance on 19 Oct 2026; the
 # 2024 and 2025 rows were read on 24 Oct 2026 through a web-fetch summary of the same table and
-# are not yet checked against the PDF itself.
+# confirmed against the PDF by the repo owner on 25 Oct 2026.
 obligation_pct:        # percent of the obligated amount
   2024: {main: 13.563, development: 1.379}
   2025: {main: 14.054, development: 1.619}

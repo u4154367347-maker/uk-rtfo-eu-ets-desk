@@ -14,7 +14,6 @@ Numbers below come from [`data/processed/rtfo_monitor.json`](../data/processed/r
 **What would change this view**
 - Recorded 2025 redemptions and later 2026 issuance for periods 4-6 once they settle. The provisional files show no 2025 redemptions yet, so the 2025 close is modelled, not observed.
 - DfT explaining the 2024 gap below (it moves the 2026 balance by about 4 points of the obligation).
-- The 2024 and 2025 obligation percentages checked against the PDF (not done yet, see `config/rtfo_obligation.yaml`).
 - A price source better than one seller's average.
 
 ## 1. The 2024 gap
@@ -38,7 +37,7 @@ The model runs both versions: 2024 leftover of 1,234 (as published) or 906 (impl
 
 ## 2. How the obligation is built
 
-Obligation = percentage x obligated amount (DfT guidance paras 3.5-3.8, Table 1). The obligated amount is fossil fuel plus non-sustainable eligible fuel; the model uses RF_0101 "Total fossil fuel" as the proxy, which includes 2,327m litres of low sulphur gas oil (5.1% of the 2024 proxy). Percentages (main / development): 2024 13.563 / 1.379, 2025 14.054 / 1.619, 2026 14.552 / 1.863. The 2024 and 2025 rows are not yet checked against the PDF itself.
+Obligation = percentage x obligated amount (DfT guidance paras 3.5-3.8, Table 1). The obligated amount is fossil fuel plus non-sustainable eligible fuel; the model uses RF_0101 "Total fossil fuel" as the proxy, which includes 2,327m litres of low sulphur gas oil (5.1% of the 2024 proxy). Percentages (main / development): 2024 13.563 / 1.379, 2025 14.054 / 1.619, 2026 14.552 / 1.863. All three rows were checked against Table 1 of the PDF.
 
 **2024 check (last final year):** formula obligation 6,196.9 vs 5,627.9 main-type certificates redeemed, a ratio of 0.908. The cause is unknown from public data: buy-out, the definition of the obligated amount (0.957 without low sulphur gas oil), or carry-over timing. RF_0107 says 18 of 20 obligated suppliers met the main obligation fully with certificates, but that count is unweighted by supplier size, so it does not settle this. The calibrated cases scale the obligation by 0.908 in **both** 2025 and 2026.
 

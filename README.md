@@ -12,7 +12,7 @@ Public-data monitors for two compliance markets, built the way a commodities des
 
 ![RTFO monitor](docs/rtfo_monitor.png)
 
-On the certificates issued so far (Jan to May 2026), main-type RTFCs look short: -9% to -30% of the formula obligation. The price (19.1p in August 2026, 38% of the 50p cap, below a year earlier) does not look like a market that short, so either issuance is lagging or the obligation is lower than the formula implies, and the public data cannot tell which. DfT's own 2024 balance table also has an unexplained 328m-certificate gap, and the 2024/2025 obligation percentages are not yet checked against the PDF. Method, assumptions and what would change the view: [docs/rtfo_monitor.md](docs/rtfo_monitor.md). Run it with `make monitor`.
+On the certificates issued so far (Jan to May 2026), main-type RTFCs look short: -9% to -30% of the formula obligation. The price (19.1p in August 2026, 38% of the 50p cap, below a year earlier) does not look like a market that short, so either issuance is lagging or the obligation is lower than the formula implies, and the public data cannot tell which. DfT's own 2024 balance table also has an unexplained 328m-certificate gap. Method, assumptions and what would change the view: [docs/rtfo_monitor.md](docs/rtfo_monitor.md). Run it with `make monitor`.
 
 ## How to run
 
