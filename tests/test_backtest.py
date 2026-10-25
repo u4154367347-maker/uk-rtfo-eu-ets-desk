@@ -83,9 +83,18 @@ def test_protocol_was_committed_with_the_pinned_values():
     assert str(cfg["periods"]["out_of_sample"]["start"]) == "2023-01-01"
 
 
+def _approx(x):
+    """Same structure, floats compared to 1e-9 relative (last-digit differences across machines are not staleness)."""
+    if isinstance(x, dict):
+        return {k: _approx(v) for k, v in x.items()}
+    if isinstance(x, list):
+        return [_approx(v) for v in x]
+    return pytest.approx(x, rel=1e-9) if isinstance(x, float) else x
+
+
 def test_committed_results_are_not_stale():
-    fresh = backtest.build_backtest()
-    assert json.loads(json.dumps(fresh)) == json.loads(backtest.OUTPUT_PATH.read_text())
+    fresh = json.loads(json.dumps(backtest.build_backtest()))
+    assert fresh == _approx(json.loads(backtest.OUTPUT_PATH.read_text()))
 
 
 def test_circular_shift_p_is_small_for_a_perfect_periodic_signal_and_a_valid_probability():
