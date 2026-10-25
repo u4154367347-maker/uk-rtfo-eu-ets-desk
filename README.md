@@ -6,13 +6,19 @@ Public-data monitors for two compliance markets, built the way a commodities des
 2. **EU ETS auction signal**: does EEX primary auction demand say anything about the next auction price, once costs are included?
 3. **Broker note**: a one-page note written only from numbers this repo computed.
 
-> **Status:** work in progress (v1 target: 9 Nov 2026). Done so far: RTFO, EEX auction and RTFC price-proxy data pipelines, and the RTFO balance monitor. The EUA auction backtest and the broker note are not built yet.
+> **Status:** work in progress (v1 target: 9 Nov 2026). Done so far: RTFO, EEX auction and RTFC price-proxy data pipelines, and the RTFO balance monitor. The EUA auction backtest is a null result (below); the broker note is not built yet.
 
 ## Headline: RTFO balance monitor
 
 ![RTFO monitor](docs/rtfo_monitor.png)
 
 On the certificates issued so far (Jan to May 2026), main-type RTFCs look short: -9% to -30% of the formula obligation. The price (19.1p in August 2026, 38% of the 50p cap, below a year earlier) does not look like a market that short, so either issuance is lagging or the obligation is lower than the formula implies, and the public data cannot tell which. DfT's own 2024 balance table also has an unexplained 328m-certificate gap. Method, assumptions and what would change the view: [docs/rtfo_monitor.md](docs/rtfo_monitor.md). Run it with `make monitor`.
+
+## Headline: EUA auction signal
+
+![EUA backtest](docs/eua_backtest.png)
+
+Does strong demand at one EEX auction predict later auction prices? **Not in a way I can show.** Out of sample (2023 to Oct 2026) the signal, entered one auction later so it has no look-ahead, earns +2.4bp per auction step after a 10bp cost against +2.2bp for always being long, with a permutation p-value of 0.116 against a pre-registered 0.05; the effect is inconclusive, not proven absent. It only looks strong if a position could be opened at the auction price after seeing the result, which the data cannot show. Protocol (fixed in an earlier commit than the results), method and limits: [docs/eua_backtest.md](docs/eua_backtest.md).
 
 ## How to run
 
@@ -89,7 +95,8 @@ src/desk/eex.py         EEX auction parser with per-auction checks
 src/desk/refuels.py     validation of the hand-curated RTFC price CSV
 src/desk/pipeline.py    `make data` entry point
 src/desk/monitor.py     RTFO balance monitor (`make monitor`)
-src/desk/charts.py      headline chart
+src/desk/backtest.py    EUA auction backtest (protocol: config/backtest.yaml)
+src/desk/charts.py      headline charts
 config/rtfo_obligation.yaml  obligation percentages and buy-out prices (with source)
 docs/                   monitor write-up and chart
 data/manual/            hand-curated inputs (ReFuels RTFC prices)

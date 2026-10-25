@@ -120,3 +120,16 @@ def test_full_history_parses_without_mismatches():
     df = eex.parse_files(paths)
     assert df["date"].min().year == 2012 and len(df) > 2900
     assert df.loc[df["price_eur"].isna(), "status"].eq("cancelled").all()
+
+
+def test_parse_files_raises_when_an_auction_has_no_country(tmp_path, monkeypatch):
+    real = eex.read_auction_file(fixture("2025"))
+    real.table.loc[0, "country"] = None
+    monkeypatch.setattr(eex, "read_auction_file", lambda path: real)
+    with pytest.raises(eex.AuctionChecksFailed, match="without a country"):
+        eex.parse_files([fixture("2025")])
+
+
+def test_committed_auctions_have_a_country_everywhere():
+    committed = pd.read_parquet(Path(__file__).parents[1] / "data" / "processed" / "eex_auctions.parquet")
+    assert committed["country"].notna().all()

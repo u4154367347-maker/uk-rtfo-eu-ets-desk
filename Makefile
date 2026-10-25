@@ -14,4 +14,5 @@ test:
 .PHONY: monitor
 monitor:
 	$(PYTHON) -m desk.monitor
+	$(PYTHON) -m desk.backtest
 	$(PYTHON) -m desk.charts

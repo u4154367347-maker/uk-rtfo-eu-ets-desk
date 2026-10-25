@@ -1,0 +1,557 @@
+{
+  "protocol": "config/backtest.yaml (committed before results)",
+  "data": {
+    "auctions": 1948,
+    "first": "2012-11-13",
+    "last": "2026-10-22",
+    "largest_abs_step_return": 0.529558160002326
+  },
+  "in_sample": {
+    "first_entry": "2018-01-08",
+    "last_entry": "2022-12-19",
+    "steps": 692,
+    "results": {
+      "primary/long_flat": {
+        "by_cost_bps": {
+          "0": {
+            "steps": 692,
+            "mean_per_auction": 0.0021186471199660293,
+            "total_log_return": 1.4661038070164922,
+            "annualised_sharpe": 0.9755062439084816,
+            "max_drawdown": -0.442782836984166,
+            "exposure": 0.4595375722543353,
+            "trades": 216.0,
+            "hit_rate_when_invested": 0.559748427672956
+          },
+          "5": {
+            "steps": 692,
+            "mean_per_auction": 0.00196257775580418,
+            "total_log_return": 1.3581038070164926,
+            "annualised_sharpe": 0.9043272991030389,
+            "max_drawdown": -0.44361803617269835,
+            "exposure": 0.4595375722543353,
+            "trades": 216.0,
+            "hit_rate_when_invested": 0.559748427672956
+          },
+          "10": {
+            "steps": 692,
+            "mean_per_auction": 0.0018065083916423302,
+            "total_log_return": 1.2501038070164925,
+            "annualised_sharpe": 0.8329733765646257,
+            "max_drawdown": -0.44445198350157766,
+            "exposure": 0.4595375722543353,
+            "trades": 216.0,
+            "hit_rate_when_invested": 0.559748427672956,
+            "permutation_p_one_sided": 0.1468853114688531,
+            "circular_shift_p_one_sided": 0.2023121387283237
+          },
+          "20": {
+            "steps": 692,
+            "mean_per_auction": 0.0014943696633186304,
+            "total_log_return": 1.0341038070164923,
+            "annualised_sharpe": 0.6898083434638377,
+            "max_drawdown": -0.4523455507906817,
+            "exposure": 0.4595375722543353,
+            "trades": 216.0,
+            "hit_rate_when_invested": 0.559748427672956
+          }
+        },
+        "mean_return_when_strong": 0.004610389330240543,
+        "mean_return_when_not_strong": 0.002131057037505976
+      },
+      "primary/long_short": {
+        "by_cost_bps": {
+          "0": {
+            "steps": 692,
+            "mean_per_auction": 0.0009668908598110661,
+            "total_log_return": 0.6690884749892577,
+            "annualised_sharpe": 0.2889010230763164,
+            "max_drawdown": -0.7020187264201674,
+            "exposure": 1.0,
+            "trades": 433.0,
+            "hit_rate_when_invested": 0.5057803468208093
+          },
+          "5": {
+            "steps": 692,
+            "mean_per_auction": 0.0006540295881347653,
+            "total_log_return": 0.4525884749892576,
+            "annualised_sharpe": 0.19548388194219393,
+            "max_drawdown": -0.7190910363142382,
+            "exposure": 1.0,
+            "trades": 433.0,
+            "hit_rate_when_invested": 0.5057803468208093
+          },
+          "10": {
+            "steps": 692,
+            "mean_per_auction": 0.00034116831645846467,
+            "total_log_return": 0.23608847498925756,
+            "annualised_sharpe": 0.10199166061706869,
+            "max_drawdown": -0.7351852184165264,
+            "exposure": 1.0,
+            "trades": 433.0,
+            "hit_rate_when_invested": 0.5057803468208093,
+            "permutation_p_one_sided": 0.14708529147085292,
+            "circular_shift_p_one_sided": 0.2023121387283237
+          },
+          "20": {
+            "steps": 692,
+            "mean_per_auction": -0.0002845542268941366,
+            "total_log_return": -0.1969115250107425,
+            "annualised_sharpe": -0.08506424444066002,
+            "max_drawdown": -0.7812426977892912,
+            "exposure": 1.0,
+            "trades": 433.0,
+            "hit_rate_when_invested": 0.5057803468208093
+          }
+        },
+        "mean_return_when_strong": 0.004610389330240543,
+        "mean_return_when_not_strong": 0.002131057037505976
+      },
+      "diagnostic/long_flat": {
+        "by_cost_bps": {
+          "0": {
+            "steps": 692,
+            "mean_per_auction": 0.0020881663006921606,
+            "total_log_return": 1.445011080078975,
+            "annualised_sharpe": 0.931629051877462,
+            "max_drawdown": -0.4409600306971072,
+            "exposure": 0.4595375722543353,
+            "trades": 216.0,
+            "hit_rate_when_invested": 0.550314465408805
+          },
+          "5": {
+            "steps": 692,
+            "mean_per_auction": 0.0019320969365303107,
+            "total_log_return": 1.337011080078975,
+            "annualised_sharpe": 0.8618882575963114,
+            "max_drawdown": -0.4479045367276818,
+            "exposure": 0.4595375722543353,
+            "trades": 216.0,
+            "hit_rate_when_invested": 0.550314465408805
+          },
+          "10": {
+            "steps": 692,
+            "mean_per_auction": 0.0017760275723684607,
+            "total_log_return": 1.2290110800789749,
+            "annualised_sharpe": 0.7921048972968722,
+            "max_drawdown": -0.4547627767188738,
+            "exposure": 0.4595375722543353,
+            "trades": 216.0,
+            "hit_rate_when_invested": 0.550314465408805,
+            "permutation_p_one_sided": 0.15448455154484553,
+            "circular_shift_p_one_sided": 0.20809248554913296
+          },
+          "20": {
+            "steps": 692,
+            "mean_per_auction": 0.0014638888440447614,
+            "total_log_return": 1.013011080078975,
+            "annualised_sharpe": 0.6524746633600088,
+            "max_drawdown": -0.47501747107364267,
+            "exposure": 0.4595375722543353,
+            "trades": 216.0,
+            "hit_rate_when_invested": 0.550314465408805
+          }
+        },
+        "mean_return_when_strong": 0.004544060000248349,
+        "mean_return_when_not_strong": 0.002187454703114311
+      },
+      "diagnostic/long_short": {
+        "by_cost_bps": {
+          "0": {
+            "steps": 692,
+            "mean_per_auction": 0.0009059292212633276,
+            "total_log_return": 0.6269030211142227,
+            "annualised_sharpe": 0.2706761907008062,
+            "max_drawdown": -0.7514059820481893,
+            "exposure": 1.0,
+            "trades": 433.0,
+            "hit_rate_when_invested": 0.49710982658959535
+          },
+          "5": {
+            "steps": 692,
+            "mean_per_auction": 0.0005930679495870267,
+            "total_log_return": 0.4104030211142225,
+            "annualised_sharpe": 0.17715250267625846,
+            "max_drawdown": -0.7808358229521406,
+            "exposure": 1.0,
+            "trades": 433.0,
+            "hit_rate_when_invested": 0.49710982658959535
+          },
+          "10": {
+            "steps": 692,
+            "mean_per_auction": 0.00028020667791072595,
+            "total_log_return": 0.19390302111422236,
+            "annualised_sharpe": 0.0836659905048286,
+            "max_drawdown": -0.806781607631538,
+            "exposure": 1.0,
+            "trades": 433.0,
+            "hit_rate_when_invested": 0.49710982658959535,
+            "permutation_p_one_sided": 0.1546845315468453,
+            "circular_shift_p_one_sided": 0.20809248554913296
+          },
+          "20": {
+            "steps": 692,
+            "mean_per_auction": -0.0003455158654418752,
+            "total_log_return": -0.23909697888577763,
+            "annualised_sharpe": -0.10304243798597351,
+            "max_drawdown": -0.849822021233472,
+            "exposure": 1.0,
+            "trades": 433.0,
+            "hit_rate_when_invested": 0.49710982658959535
+          }
+        },
+        "mean_return_when_strong": 0.004544060000248349,
+        "mean_return_when_not_strong": 0.002187454703114311
+      },
+      "always_long": {
+        "by_cost_bps": {
+          "0": {
+            "steps": 692,
+            "mean_per_auction": 0.003270403380120993,
+            "total_log_return": 2.2631191390437273,
+            "annualised_sharpe": 0.9802372695002665,
+            "max_drawdown": -0.5044127630685682,
+            "exposure": 1.0,
+            "trades": 1.0,
+            "hit_rate_when_invested": 0.546242774566474
+          },
+          "5": {
+            "steps": 692,
+            "mean_per_auction": 0.0032696808367683925,
+            "total_log_return": 2.2626191390437276,
+            "annualised_sharpe": 0.9800102945221264,
+            "max_drawdown": -0.5044127630685681,
+            "exposure": 1.0,
+            "trades": 1.0,
+            "hit_rate_when_invested": 0.546242774566474
+          },
+          "10": {
+            "steps": 692,
+            "mean_per_auction": 0.003268958293415792,
+            "total_log_return": 2.262119139043728,
+            "annualised_sharpe": 0.9797830972655565,
+            "max_drawdown": -0.5044127630685682,
+            "exposure": 1.0,
+            "trades": 1.0,
+            "hit_rate_when_invested": 0.546242774566474
+          },
+          "20": {
+            "steps": 692,
+            "mean_per_auction": 0.003267513206710589,
+            "total_log_return": 2.2611191390437275,
+            "annualised_sharpe": 0.9793280366080082,
+            "max_drawdown": -0.5044127630685681,
+            "exposure": 1.0,
+            "trades": 1.0,
+            "hit_rate_when_invested": 0.546242774566474
+          }
+        }
+      }
+    },
+    "exploratory_post_hoc": {
+      "primary": {
+        "spread": 0.0024793322927345665,
+        "spread_ci95_block_bootstrap": [
+          -0.004935934974951464,
+          0.009803152127424377
+        ],
+        "spread_excluding_august_signals": 0.0029448754685031187,
+        "spread_excluding_3_largest_steps": 0.003193120193498639,
+        "share_strong_august": 0.9523809523809523,
+        "share_strong_other_months": 0.41017488076311603,
+        "gross_permutation_p": 0.21287871212878712
+      },
+      "diagnostic": {
+        "spread": 0.002356605297134038,
+        "spread_ci95_block_bootstrap": [
+          -0.003120833529172385,
+          0.007815503096182298
+        ],
+        "spread_excluding_august_signals": 0.0024412193919733424,
+        "spread_excluding_3_largest_steps": 0.0030698807438535335,
+        "share_strong_august": 0.9523809523809523,
+        "share_strong_other_months": 0.41017488076311603,
+        "gross_permutation_p": 0.21797820217978203
+      }
+    },
+    "years": 4.944558521560575
+  },
+  "out_of_sample": {
+    "first_entry": "2023-01-09",
+    "last_entry": "2026-10-20",
+    "steps": 547,
+    "results": {
+      "primary/long_flat": {
+        "by_cost_bps": {
+          "0": {
+            "steps": 547,
+            "mean_per_auction": 0.0006587147649563904,
+            "total_log_return": 0.3603169764311455,
+            "annualised_sharpe": 0.49905717956672896,
+            "max_drawdown": -0.2926982507864391,
+            "exposure": 0.4460694698354662,
+            "trades": 229.0,
+            "hit_rate_when_invested": 0.48360655737704916
+          },
+          "5": {
+            "steps": 547,
+            "mean_per_auction": 0.00044939118177540315,
+            "total_log_return": 0.24581697643114553,
+            "annualised_sharpe": 0.34030663918458454,
+            "max_drawdown": -0.3077429285791976,
+            "exposure": 0.4460694698354662,
+            "trades": 229.0,
+            "hit_rate_when_invested": 0.48360655737704916
+          },
+          "10": {
+            "steps": 547,
+            "mean_per_auction": 0.00024006759859441593,
+            "total_log_return": 0.1313169764311455,
+            "annualised_sharpe": 0.1816635742952917,
+            "max_drawdown": -0.3224675982139955,
+            "exposure": 0.4460694698354662,
+            "trades": 229.0,
+            "hit_rate_when_invested": 0.48360655737704916,
+            "permutation_p_one_sided": 0.1161883811618838,
+            "circular_shift_p_one_sided": 0.14442413162705667
+          },
+          "20": {
+            "steps": 547,
+            "mean_per_auction": -0.0001785795677675585,
+            "total_log_return": -0.0976830235688545,
+            "annualised_sharpe": -0.1348438908806896,
+            "max_drawdown": -0.35098399518971457,
+            "exposure": 0.4460694698354662,
+            "trades": 229.0,
+            "hit_rate_when_invested": 0.48360655737704916
+          }
+        },
+        "mean_return_when_strong": 0.0014767089197997771,
+        "mean_return_when_not_strong": -0.000792607693636498
+      },
+      "primary/long_short": {
+        "by_cost_bps": {
+          "0": {
+            "steps": 547,
+            "mean_per_auction": 0.0010977643649049441,
+            "total_log_return": 0.6004771076030044,
+            "annualised_sharpe": 0.5235980609767059,
+            "max_drawdown": -0.2703964798397074,
+            "exposure": 1.0,
+            "trades": 459.0,
+            "hit_rate_when_invested": 0.5027422303473492
+          },
+          "5": {
+            "steps": 547,
+            "mean_per_auction": 0.0006782031217605199,
+            "total_log_return": 0.3709771076030044,
+            "annualised_sharpe": 0.3231900065626932,
+            "max_drawdown": -0.292772114589533,
+            "exposure": 1.0,
+            "trades": 459.0,
+            "hit_rate_when_invested": 0.5027422303473492
+          },
+          "10": {
+            "steps": 547,
+            "mean_per_auction": 0.00025864187861609583,
+            "total_log_return": 0.14147710760300442,
+            "annualised_sharpe": 0.12309527946855003,
+            "max_drawdown": -0.32360454990184084,
+            "exposure": 1.0,
+            "trades": 459.0,
+            "hit_rate_when_invested": 0.5027422303473492,
+            "permutation_p_one_sided": 0.11628837116288371,
+            "circular_shift_p_one_sided": 0.1480804387568556
+          },
+          "20": {
+            "steps": 547,
+            "mean_per_auction": -0.0005804806076727526,
+            "total_log_return": -0.31752289239699566,
+            "annualised_sharpe": -0.2752517171941647,
+            "max_drawdown": -0.4317602463570932,
+            "exposure": 1.0,
+            "trades": 459.0,
+            "hit_rate_when_invested": 0.5027422303473492
+          }
+        },
+        "mean_return_when_strong": 0.0014767089197997771,
+        "mean_return_when_not_strong": -0.000792607693636498
+      },
+      "diagnostic/long_flat": {
+        "by_cost_bps": {
+          "0": {
+            "steps": 547,
+            "mean_per_auction": 0.0013974648609863599,
+            "total_log_return": 0.7644132789595388,
+            "annualised_sharpe": 1.0273010347286275,
+            "max_drawdown": -0.2503155429927676,
+            "exposure": 0.4460694698354662,
+            "trades": 230.0,
+            "hit_rate_when_invested": 0.5409836065573771
+          },
+          "5": {
+            "steps": 547,
+            "mean_per_auction": 0.001187227201022923,
+            "total_log_return": 0.6494132789595389,
+            "annualised_sharpe": 0.87228832399114,
+            "max_drawdown": -0.27101555523445764,
+            "exposure": 0.4460694698354662,
+            "trades": 230.0,
+            "hit_rate_when_invested": 0.5409836065573771
+          },
+          "10": {
+            "steps": 547,
+            "mean_per_auction": 0.000976989541059486,
+            "total_log_return": 0.5344132789595388,
+            "annualised_sharpe": 0.7172772721656483,
+            "max_drawdown": -0.29114400633092075,
+            "exposure": 0.4460694698354662,
+            "trades": 230.0,
+            "hit_rate_when_invested": 0.5409836065573771,
+            "permutation_p_one_sided": 0.004999500049995001,
+            "circular_shift_p_one_sided": 0.003656307129798903
+          },
+          "20": {
+            "steps": 547,
+            "mean_per_auction": 0.0005565142211326121,
+            "total_log_return": 0.30441327895953885,
+            "annualised_sharpe": 0.4076822833955134,
+            "max_drawdown": -0.3310056701330478,
+            "exposure": 0.4460694698354662,
+            "trades": 230.0,
+            "hit_rate_when_invested": 0.5409836065573771
+          }
+        },
+        "mean_return_when_strong": 0.0031328413072112256,
+        "mean_return_when_not_strong": -0.0021262588570965415
+      },
+      "diagnostic/long_short": {
+        "by_cost_bps": {
+          "0": {
+            "steps": 547,
+            "mean_per_auction": 0.002575264556964884,
+            "total_log_return": 1.4086697126597914,
+            "annualised_sharpe": 1.2335986250003763,
+            "max_drawdown": -0.43434218824629645,
+            "exposure": 1.0,
+            "trades": 459.0,
+            "hit_rate_when_invested": 0.5557586837294333
+          },
+          "5": {
+            "steps": 547,
+            "mean_per_auction": 0.002155703313820459,
+            "total_log_return": 1.179169712659791,
+            "annualised_sharpe": 1.0317974848141866,
+            "max_drawdown": -0.4610578967020953,
+            "exposure": 1.0,
+            "trades": 459.0,
+            "hit_rate_when_invested": 0.5557586837294333
+          },
+          "10": {
+            "steps": 547,
+            "mean_per_auction": 0.0017361420706760349,
+            "total_log_return": 0.949669712659791,
+            "annualised_sharpe": 0.8299992855729225,
+            "max_drawdown": -0.49999997415715836,
+            "exposure": 1.0,
+            "trades": 459.0,
+            "hit_rate_when_invested": 0.5557586837294333,
+            "permutation_p_one_sided": 0.004899510048995101,
+            "circular_shift_p_one_sided": 0.003656307129798903
+          },
+          "20": {
+            "steps": 547,
+            "mean_per_auction": 0.0008970195843871866,
+            "total_log_return": 0.4906697126597911,
+            "annualised_sharpe": 0.42734047140970943,
+            "max_drawdown": -0.5733101448289835,
+            "exposure": 1.0,
+            "trades": 459.0,
+            "hit_rate_when_invested": 0.5557586837294333
+          }
+        },
+        "mean_return_when_strong": 0.0031328413072112256,
+        "mean_return_when_not_strong": -0.0021262588570965415
+      },
+      "always_long": {
+        "by_cost_bps": {
+          "0": {
+            "steps": 547,
+            "mean_per_auction": 0.0002196651650078368,
+            "total_log_return": 0.12015684525928674,
+            "annualised_sharpe": 0.10467789829493936,
+            "max_drawdown": -0.4742032596283611,
+            "exposure": 1.0,
+            "trades": 1.0,
+            "hit_rate_when_invested": 0.48080438756855576
+          },
+          "5": {
+            "steps": 547,
+            "mean_per_auction": 0.00021875108822538709,
+            "total_log_return": 0.11965684525928674,
+            "annualised_sharpe": 0.1042487409522126,
+            "max_drawdown": -0.4742032596283611,
+            "exposure": 1.0,
+            "trades": 1.0,
+            "hit_rate_when_invested": 0.48080438756855576
+          },
+          "10": {
+            "steps": 547,
+            "mean_per_auction": 0.00021783701144293736,
+            "total_log_return": 0.11915684525928674,
+            "annualised_sharpe": 0.10381945660403476,
+            "max_drawdown": -0.47420325962836096,
+            "exposure": 1.0,
+            "trades": 1.0,
+            "hit_rate_when_invested": 0.48080438756855576
+          },
+          "20": {
+            "steps": 547,
+            "mean_per_auction": 0.00021600885787803793,
+            "total_log_return": 0.11815684525928674,
+            "annualised_sharpe": 0.10296051041995695,
+            "max_drawdown": -0.4742032596283611,
+            "exposure": 1.0,
+            "trades": 1.0,
+            "hit_rate_when_invested": 0.48080438756855576
+          }
+        }
+      }
+    },
+    "exploratory_post_hoc": {
+      "primary": {
+        "spread": 0.0022693166134362753,
+        "spread_ci95_block_bootstrap": [
+          -0.0017435365738203074,
+          0.006080162556645904
+        ],
+        "spread_excluding_august_signals": 0.002746537832156658,
+        "spread_excluding_3_largest_steps": 0.0019037015291346391,
+        "share_strong_august": 0.7307692307692307,
+        "share_strong_other_months": 0.4161616161616162,
+        "gross_permutation_p": 0.14808519148085192
+      },
+      "diagnostic": {
+        "spread": 0.005259100164307767,
+        "spread_ci95_block_bootstrap": [
+          0.0007597650176688126,
+          0.010159164745172939
+        ],
+        "spread_excluding_august_signals": 0.005568638956068704,
+        "spread_excluding_3_largest_steps": 0.005720903650624025,
+        "share_strong_august": 0.7307692307692307,
+        "share_strong_other_months": 0.4161616161616162,
+        "gross_permutation_p": 0.0081991800819918
+      }
+    },
+    "years": 3.7782340862423
+  },
+  "verdict_out_of_sample": {
+    "checks": {
+      "net_mean_above_always_long": true,
+      "permutation_p_below_0.05": false,
+      "drawdown_no_worse_than_always_long": true
+    },
+    "signal_useful": false
+  }
+}

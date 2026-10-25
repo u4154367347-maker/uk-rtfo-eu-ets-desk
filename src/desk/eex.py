@@ -173,6 +173,11 @@ def parse_files(paths: list[Path], known_mismatches: list[str] | None = None) ->
         raise AuctionChecksFailed(f"{len(unexpected)} unexpected: " + "; ".join(unexpected[:10]))
 
     df = pd.concat(frames, ignore_index=True)
+    no_country = df[df["country"].isna()]
+    if len(no_country):
+        # Same-day auctions on different platforms are only separable by country, so a missing one is not usable.
+        raise AuctionChecksFailed(f"{len(no_country)} auctions without a country, e.g. "
+                                  f"{no_country[['date', 'auction_name']].head(3).astype(str).values.tolist()}")
     key = ["date", "auction_name", "contract"]
     dupes = df[df.duplicated(key, keep=False)]
     if len(dupes):
