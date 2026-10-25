@@ -1,12 +1,11 @@
 # UK RTFO & EU ETS Compliance Desk
 
-Public-data monitors for two compliance markets, built the way a commodities desk would use them:
+Public-data monitors for two compliance markets:
 
 1. **UK RTFO balance monitor**: are Renewable Transport Fuel Certificates (RTFCs) in surplus or deficit this year, and how close is the price to the buy-out cap?
 2. **EU ETS auction signal**: does EEX primary auction demand say anything about the next auction price, once costs are included?
-3. **Broker note**: a one-page note written only from numbers this repo computed.
 
-> **Status:** work in progress (v1 target: 9 Nov 2026). Done so far: RTFO, EEX auction and RTFC price-proxy data pipelines, and the RTFO balance monitor. The EUA auction backtest is a null result (below); the broker note is not built yet.
+> **Status:** work in progress (v1 target: 9 Nov 2026). Done so far: RTFO, EEX auction and RTFC price-proxy data pipelines, and the RTFO balance monitor. The EUA auction backtest is a null result (below).
 
 ## Headline: RTFO balance monitor
 
