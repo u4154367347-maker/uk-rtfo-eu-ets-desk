@@ -1,0 +1,47 @@
+# Pre-registered protocol for the EUA auction backtest.
+# Committed BEFORE any signal, position or return was computed (see git history). Nothing below is
+# tuned on data; change it only by a new commit that says why, and report the change in the write-up.
+#
+# Question: does strong demand at one EEX EUA primary auction (cover ratio) say anything about the
+# price path over the following auctions, once costs are included?
+
+universe:
+  platform: EU            # eex_auctions.country == "EU": the common platform. DE/PL/... auctions run the same days.
+  contracts: eua          # eex_auctions.is_eua
+  require_price: true     # cancelled auctions have no price and are dropped
+  price_series: auction clearing price, EUR/tCO2 (the only price in the data; no secondary-market prices)
+
+periods:
+  in_sample: {start: 2018-01-01, end: 2022-12-31}    # context only; no parameter is fitted on it
+  out_of_sample: {start: 2023-01-01, end: latest}    # fixed now; 'latest' = last auction in the committed table
+  note: the out-of-sample period is judged once. No second look after changing the signal.
+
+signal:
+  name: relative_cover_ratio
+  definition: cover_ratio_t / median(cover_ratio of the 60 previous EU auctions, t excluded)
+  strong_demand_if: "> 1.0"
+  lookback_auctions: 60
+
+positions:
+  primary: long_flat            # long when strong_demand, flat otherwise
+  secondary: long_short         # reported, never used for the headline
+
+timing:
+  primary: "signal known after auction t; enter at the clearing price of auction t+1; exit at auction t+2; return = ln(P[t+2] / P[t+1])"
+  diagnostic: "enter at P[t], exit at P[t+1]; optimistic because the auction price cannot be bought after the result is known"
+
+costs:
+  unit: basis points of price, charged per one-way position change (entry or exit)
+  grid_bps: [0, 5, 10, 20]
+  headline_bps: 10              # assumed; the real secondary-market spread is not confirmed
+
+benchmarks:
+  always_long: same timing, same dates, no signal
+  shuffled_signal: {draws: 10000, seed: 20261025, keeps: number of long positions}   # permutation test of the signal
+
+metrics: [mean_return_per_auction, total_log_return, annualised_sharpe, max_drawdown, hit_rate, exposure, trades, permutation_p_one_sided]
+
+decision_rule: >
+  Call the signal useful only if, in the out-of-sample period at the headline cost, ALL of: net mean return per
+  auction is above always_long, the one-sided permutation p-value is below 0.05, and max drawdown is no worse than
+  always_long. Anything else is reported as a null result.
