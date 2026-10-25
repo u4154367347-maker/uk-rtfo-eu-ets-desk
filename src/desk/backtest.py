@@ -81,6 +81,61 @@ def permutation_p(step_returns: np.ndarray, pos: np.ndarray, cost_bps: float, dr
     return float((1 + better) / (1 + draws))
 
 
+def circular_shift_p(step_returns: np.ndarray, pos: np.ndarray, cost_bps: float) -> float:
+    """One-sided p against every circular shift of the positions (all N-1 non-zero shifts).
+
+    Unlike a free shuffle this keeps the number of trades and the persistence of the signal, so costs are
+    like for like. It is a sensitivity check; the pre-registered rule uses the free shuffle.
+    """
+    observed = run(step_returns, pos, cost_bps).sum()
+    stats = np.array([run(step_returns, np.roll(pos, k), cost_bps).sum() for k in range(1, len(pos))])
+    return float((1 + (stats >= observed).sum()) / (1 + len(stats)))
+
+
+def spread(step_returns: np.ndarray, pos: np.ndarray) -> float:
+    """Mean gross step return when invested minus when not invested."""
+    return float(step_returns[pos > 0].mean() - step_returns[pos <= 0].mean())
+
+
+def block_bootstrap_spread_ci(step_returns: np.ndarray, pos: np.ndarray, draws: int, seed: int, block: int = 20) -> list[float]:
+    """95% interval for the invested-minus-flat spread; moving blocks of `block` steps keep short-run dependence."""
+    rng = np.random.default_rng(seed)
+    n = len(pos)
+    starts_per_draw = int(np.ceil(n / block))
+    out = []
+    for _ in range(draws):
+        idx = (rng.integers(0, n, starts_per_draw)[:, None] + np.arange(block)).ravel()[:n] % n
+        r, p = step_returns[idx], pos[idx]
+        if (p > 0).any() and (p <= 0).any():
+            out.append(spread(r, p))
+    lo, hi = np.percentile(out, [2.5, 97.5])
+    return [float(lo), float(hi)]
+
+
+def exploratory(window: pd.DataFrame, series: pd.DataFrame, cfg: dict) -> dict:
+    """Post-hoc checks added after review, not part of the pre-registered decision (long/flat only)."""
+    perm = cfg["benchmarks"]["shuffled_signal"]
+    ret = window["step_return"].to_numpy()
+    out = {}
+    for timing in ("primary", "diagnostic"):
+        pos = positions(series, "long_flat", timing).loc[window.index].to_numpy()
+        # the auction whose result decides the position over step j: j-1 for primary, j for diagnostic
+        signal_dates = series["date"].shift(1 if timing == "primary" else 0).loc[window.index]
+        not_august = (signal_dates.dt.month != 8).to_numpy()
+        august = ~not_august
+        big = np.zeros(len(ret), bool)
+        big[np.argsort(-np.abs(ret))[:3]] = True
+        out[timing] = {
+            "spread": spread(ret, pos),
+            "spread_ci95_block_bootstrap": block_bootstrap_spread_ci(ret, pos, 5000, perm["seed"]),
+            "spread_excluding_august_signals": spread(ret[not_august], pos[not_august]),
+            "spread_excluding_3_largest_steps": spread(ret[~big], pos[~big]),
+            "share_strong_august": float((pos[august] > 0).mean()), "share_strong_other_months": float((pos[not_august] > 0).mean()),
+            "gross_permutation_p": permutation_p(ret, pos, 0, perm["draws"], perm["seed"]),
+        }
+    return out
+
+
 def evaluate(s: pd.DataFrame, start: str, end: str | None, cfg: dict) -> dict:
     """All pre-registered variants over steps whose entry auction lies in [start, end]."""
     window = s[(s["date"] >= start) & (s["date"] <= (end or s["date"].max()))]
@@ -103,6 +158,7 @@ def evaluate(s: pd.DataFrame, start: str, end: str | None, cfg: dict) -> dict:
                 net = run(ret, pos, c)
                 by_cost[str(c)] = metrics(net, pos, ret, years)
             by_cost[str(head)]["permutation_p_one_sided"] = permutation_p(ret, pos, head, perm["draws"], perm["seed"])
+            by_cost[str(head)]["circular_shift_p_one_sided"] = circular_shift_p(ret, pos, head)
             invested = pos > 0
             results[f"{timing}/{kind}"] = {
                 "by_cost_bps": by_cost,
@@ -112,6 +168,7 @@ def evaluate(s: pd.DataFrame, start: str, end: str | None, cfg: dict) -> dict:
     long_pos = np.ones(len(ret))
     results["always_long"] = {"by_cost_bps": {str(c): metrics(run(ret, long_pos, c), long_pos, ret, years) for c in grid}}
     out["results"] = results
+    out["exploratory_post_hoc"] = exploratory(window, s, cfg)
     out["years"] = years
     return out
 

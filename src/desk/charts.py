@@ -71,8 +71,8 @@ def build_backtest_chart(result: dict, series: pd.DataFrame, cfg: dict):
     primary = backtest.positions(series, "long_flat", "primary").loc[w.index].to_numpy()
     diagnostic = backtest.positions(series, "long_flat", "diagnostic").loc[w.index].to_numpy()
     curves = [("Always long", np.ones(len(ret)), "#777777", "-"),
-              ("Signal, tradable (enter next auction)", primary, "#1b6ca8", "-"),
-              ("Signal, enter at the auction price (not tradable)", diagnostic, "#d95f02", "--")]
+              ("Signal, entered one auction later", primary, "#1b6ca8", "-"),
+              ("Signal, entered at the auction price (look-ahead)", diagnostic, "#d95f02", "--")]
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.6), gridspec_kw={"width_ratios": [1.3, 1]})
     for label, pos, colour, style in curves:
@@ -84,7 +84,7 @@ def build_backtest_chart(result: dict, series: pd.DataFrame, cfg: dict):
 
     oos = result["out_of_sample"]["results"]
     labels, strong, weak, pvals = [], [], [], []
-    for key, name in [("primary/long_flat", "Tradable:\nnext auction onward"), ("diagnostic/long_flat", "Not tradable:\nfrom the auction price")]:
+    for key, name in [("primary/long_flat", "Delayed entry:\nnext auction onward"), ("diagnostic/long_flat", "Look-ahead:\nfrom the auction price")]:
         r = oos[key]
         labels.append(name)
         strong.append(r["mean_return_when_strong"] * 1e4)

@@ -84,7 +84,32 @@ def test_protocol_was_committed_with_the_pinned_values():
 
 
 def test_committed_results_are_not_stale():
-    assert backtest.build_backtest() == json.loads(backtest.OUTPUT_PATH.read_text())
+    fresh = backtest.build_backtest()
+    assert json.loads(json.dumps(fresh)) == json.loads(backtest.OUTPUT_PATH.read_text())
+
+
+def test_circular_shift_p_is_small_for_a_perfect_periodic_signal_and_a_valid_probability():
+    rng = np.random.default_rng(1)
+    r = rng.normal(0, 0.01, 200)
+    pos = (r > 0).astype(float)
+    p = backtest.circular_shift_p(r, pos, 0.0)
+    assert 0.0 <= p <= 0.05
+    assert 0.0 <= backtest.circular_shift_p(r, rng.integers(0, 2, 200).astype(float), 10.0) <= 1.0
+
+
+def test_spread_and_bootstrap_interval_bracket_a_known_effect():
+    rng = np.random.default_rng(2)
+    pos = rng.integers(0, 2, 400).astype(float)
+    r = rng.normal(0, 0.005, 400) + 0.01 * pos
+    assert backtest.spread(r, pos) == pytest.approx(0.01, abs=0.002)
+    lo, hi = backtest.block_bootstrap_spread_ci(r, pos, 500, 7)
+    assert lo < 0.01 < hi and lo > 0
+
+
+def test_exploratory_block_is_present_and_marked_post_hoc():
+    r = json.loads(backtest.OUTPUT_PATH.read_text())
+    assert "exploratory_post_hoc" in r["out_of_sample"]
+    assert 0 <= r["out_of_sample"]["results"]["primary/long_flat"]["by_cost_bps"]["10"]["circular_shift_p_one_sided"] <= 1
 
 
 def test_real_data_pinned_values():

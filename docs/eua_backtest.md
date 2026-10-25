@@ -1,15 +1,17 @@
 # EUA auction backtest: does strong auction demand predict later auction prices?
 
 Data: EEX EUA primary auctions on the EU common platform, 1,948 auctions from 2012-11-13 to 2026-10-22 (country `EU`, contract `T3PA` as coded by EEX, cancelled auctions dropped).
-Protocol: [`config/backtest.yaml`](../config/backtest.yaml), committed before any result was computed (see git history). Results: [`data/processed/eua_backtest.json`](../data/processed/eua_backtest.json), built by `python -m desk.backtest`.
+Protocol: [`config/backtest.yaml`](../config/backtest.yaml), committed in an earlier commit than the code and not changed since. Results: [`data/processed/eua_backtest.json`](../data/processed/eua_backtest.json), built by `python -m desk.backtest`.
 
 ![EUA backtest](eua_backtest.png)
 
-## Result: a null result
+## Result: a null result on the pre-registered rule
 
-**The signal does not pass its own test.** Out of sample (2023-01-09 to 2026-10-20, 547 auction steps), the tradable version earns +2.4bp per auction after a 10bp cost against +2.2bp for always being long, and the permutation p-value is 0.116, above the 0.05 the protocol required. The one apparent edge only exists in a version nobody can trade with this data.
+**The signal does not pass its own test.** Out of sample (2023-01-09 to 2026-10-20, 547 auction steps), the version with a one-auction delay earns +2.4bp per step after a 10bp cost against +2.2bp for always being long, and the permutation p-value is 0.116, above the 0.05 the protocol required. The one apparent edge needs look-ahead.
 
-| Out of sample, tradable (enter at the next auction) | Total net log return | Annualised Sharpe | Max drawdown |
+**What "return" means here.** The only price in the data is the auction clearing price, so a step return is the change between two consecutive auctions. Neither timing is executable as stated: you cannot sell into a primary auction, and exits and entries at auction prices need secondary or futures prices, which are not free public data. The delayed version is the one without look-ahead; it is a test of information, not a trading record.
+
+| Out of sample, delayed entry (position set by the previous auction's signal) | Total net log return | Annualised Sharpe | Max drawdown |
 |---|---|---|---|
 | Always long | +0.119 | 0.10 | -47% |
 | Signal long/flat, 0bp cost | +0.360 | 0.50 | -29% |
@@ -18,21 +20,27 @@ Protocol: [`config/backtest.yaml`](../config/backtest.yaml), committed before an
 | Signal long/flat, 20bp | -0.098 | -0.13 | -35% |
 | Signal long/short, 10bp (secondary) | +0.141 | 0.12 | -32% |
 
-Pre-registered decision rule, all three needed: net mean per auction above always long (yes, by 0.2bp, which is not a difference), permutation p below 0.05 (**no**, 0.116), drawdown no worse than always long (yes, but the signal is invested only 45% of the time). Verdict: not useful.
+Pre-registered decision rule, all three needed: net mean per step above always long (yes, by 0.2bp, which is not a meaningful difference), permutation p below 0.05 (**no**, 0.116), drawdown no worse than always long (yes, but the signal is invested only 45% of the time, so this check is nearly free). Verdict: not useful.
 
-Gross, the signal is invested 45% of the time and wins 48% of the invested steps. It earns +14.8bp per step after strong demand and -7.9bp otherwise, a spread of 22.7bp that is not statistically distinguishable from luck (p = 0.116). In sample (2018-2022) the picture is the same: p = 0.147, and the signal underperforms always-long (+1.25 vs +2.26 total log return at 10bp) in a rising market.
+**Inconclusive, not proven absent.** After strong demand the next step averages +14.8bp, otherwise -7.9bp, a spread of 22.7bp. A block-bootstrap 95% interval for that spread is -17bp to +61bp, so the data cannot rule out a real effect of that size either. The signal wins 48% of its invested steps. In sample (2018-2022) it also fails (p = 0.147) and underperforms always-long (+1.25 vs +2.26 total log return at 10bp) in a rising market.
 
-## The version that looks good but cannot be traded
+## The look-ahead version
 
-If you could buy at the auction price **after** seeing that auction's cover ratio, the same signal looks strong out of sample: +31.3bp per step after strong demand vs -21.3bp otherwise, p = 0.005, +0.534 total net at 10bp. This is the protocol's "diagnostic" timing and it was labelled optimistic in advance. The auction price is set before the result is known, so you can only enter it blind. The only price in the data is the auction clearing price, so I cannot test whether you could buy at about that level on the secondary market right after the result. That needs secondary or futures prices, which are not free public data.
+If a position could be opened at the auction price **after** seeing that auction's cover ratio, the same signal looks strong out of sample: +31bp per step after strong demand vs -21bp otherwise, spread 52.6bp (95% interval +8bp to +102bp), p = 0.005, +0.534 total net at 10bp. This is the protocol's "diagnostic" timing, labelled optimistic in advance. Auction bids are placed before the result is known, so the position can only be opened at that price blind. Whether you could buy at about that level on the secondary market right after the result cannot be tested with this data.
 
-Post-hoc and exploratory (not part of the decision): the rank correlation between relative cover ratio and the next step's return is 0.125 out of sample, but 0.001 for the step after. Whatever the signal carries is gone one auction later.
+## Robustness checks (added after review, post hoc, not part of the decision)
 
-## What I would check next, and what I have not
+- **Permutation test is not like for like.** Free shuffles produce about 270 trades against 229 for the real signal, which flatters the p-value. Without costs the shuffle p is 0.148 for the delayed version; against circular shifts of the real positions (same trade count and persistence) it is 0.144. The conclusion does not change. The look-ahead version stays significant under both (0.008 and 0.004).
+- **August.** Auction volume is cut in August, which mechanically raises the cover ratio: 73% of August signals out of sample are "strong" against 42% in other months. Dropping signals from August leaves the delayed spread at +27bp and the look-ahead spread at +56bp.
+- **Largest steps.** Dropping the 3 largest absolute steps leaves the spreads at +19bp (delayed) and +57bp (look-ahead).
+- **Persistence.** The rank correlation between relative cover ratio and the next step's return is 0.125 out of sample, and 0.001 for the step after. Whatever the signal carries is gone one auction later.
 
-- **Not confirmed:** whether the one-step effect is real market information or an artefact of auction-price timing noise. Both fit the data.
-- **Not confirmed:** the 10bp cost. It is an assumption; the real secondary spread is not in the data. The result is shown at 0, 5, 10 and 20bp.
-- Returns are changes between consecutive auction clearing prices, not secondary-market returns, and the auction is not an instrument you can trade at will.
-- One signal, one lookback (60 auctions), one cut-off date, all fixed beforehand. No variant was tried and dropped. The long/short and diagnostic results are reported, not selected.
-- The data is limited to the EU common platform. Aviation (EAA) auctions and other countries are excluded.
-- Next step if this is pursued: free secondary prices (for example a public settlement series) to test the real entry. Not started.
+## Limits
+
+- **Not confirmed:** whether the one-step effect is market information or auction-price timing noise. Both fit the data.
+- **Not confirmed:** the 10bp cost, and whether cover ratio or price are ever revised after publication. The result is shown at 0, 5, 10 and 20bp.
+- Pre-registration only goes as far as git history: the config was committed before the code and results, but the data already existed, and before fixing the protocol I had looked at yearly average cover ratios and prices (not at returns against the signal). The 2023 cut-off was chosen as the calendar year after a five-year in-sample window; I have not checked whether it matters.
+- About 8 variants and 4 p-values are reported (2 timings x 2 positions, 2 periods), with no multiple-testing correction. Only one p-value is on the decision path.
+- Steps are irregular (1 to 4 days, and about 3 weeks around Christmas), so "per auction" is not "per day", and the annualised Sharpe is approximate.
+- One signal, one lookback (60 auctions), fixed beforehand; no variant was tried and dropped. EU common platform EUAs only; aviation (EAA) and other countries are excluded.
+- Next step if pursued: a free secondary-price series to test a real entry and exit. Not started.

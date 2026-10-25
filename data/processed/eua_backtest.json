@@ -42,7 +42,8 @@
             "exposure": 0.4595375722543353,
             "trades": 216.0,
             "hit_rate_when_invested": 0.559748427672956,
-            "permutation_p_one_sided": 0.1468853114688531
+            "permutation_p_one_sided": 0.1468853114688531,
+            "circular_shift_p_one_sided": 0.2023121387283237
           },
           "20": {
             "steps": 692,
@@ -89,7 +90,8 @@
             "exposure": 1.0,
             "trades": 433.0,
             "hit_rate_when_invested": 0.5057803468208093,
-            "permutation_p_one_sided": 0.14708529147085292
+            "permutation_p_one_sided": 0.14708529147085292,
+            "circular_shift_p_one_sided": 0.2023121387283237
           },
           "20": {
             "steps": 692,
@@ -136,7 +138,8 @@
             "exposure": 0.4595375722543353,
             "trades": 216.0,
             "hit_rate_when_invested": 0.550314465408805,
-            "permutation_p_one_sided": 0.15448455154484553
+            "permutation_p_one_sided": 0.15448455154484553,
+            "circular_shift_p_one_sided": 0.20809248554913296
           },
           "20": {
             "steps": 692,
@@ -183,7 +186,8 @@
             "exposure": 1.0,
             "trades": 433.0,
             "hit_rate_when_invested": 0.49710982658959535,
-            "permutation_p_one_sided": 0.1546845315468453
+            "permutation_p_one_sided": 0.1546845315468453,
+            "circular_shift_p_one_sided": 0.20809248554913296
           },
           "20": {
             "steps": 692,
@@ -244,6 +248,32 @@
         }
       }
     },
+    "exploratory_post_hoc": {
+      "primary": {
+        "spread": 0.0024793322927345665,
+        "spread_ci95_block_bootstrap": [
+          -0.004935934974951464,
+          0.009803152127424377
+        ],
+        "spread_excluding_august_signals": 0.0029448754685031187,
+        "spread_excluding_3_largest_steps": 0.003193120193498639,
+        "share_strong_august": 0.9523809523809523,
+        "share_strong_other_months": 0.41017488076311603,
+        "gross_permutation_p": 0.21287871212878712
+      },
+      "diagnostic": {
+        "spread": 0.002356605297134038,
+        "spread_ci95_block_bootstrap": [
+          -0.003120833529172385,
+          0.007815503096182298
+        ],
+        "spread_excluding_august_signals": 0.0024412193919733424,
+        "spread_excluding_3_largest_steps": 0.0030698807438535335,
+        "share_strong_august": 0.9523809523809523,
+        "share_strong_other_months": 0.41017488076311603,
+        "gross_permutation_p": 0.21797820217978203
+      }
+    },
     "years": 4.944558521560575
   },
   "out_of_sample": {
@@ -282,7 +312,8 @@
             "exposure": 0.4460694698354662,
             "trades": 229.0,
             "hit_rate_when_invested": 0.48360655737704916,
-            "permutation_p_one_sided": 0.1161883811618838
+            "permutation_p_one_sided": 0.1161883811618838,
+            "circular_shift_p_one_sided": 0.14442413162705667
           },
           "20": {
             "steps": 547,
@@ -329,7 +360,8 @@
             "exposure": 1.0,
             "trades": 459.0,
             "hit_rate_when_invested": 0.5027422303473492,
-            "permutation_p_one_sided": 0.11628837116288371
+            "permutation_p_one_sided": 0.11628837116288371,
+            "circular_shift_p_one_sided": 0.1480804387568556
           },
           "20": {
             "steps": 547,
@@ -376,7 +408,8 @@
             "exposure": 0.4460694698354662,
             "trades": 230.0,
             "hit_rate_when_invested": 0.5409836065573771,
-            "permutation_p_one_sided": 0.004999500049995001
+            "permutation_p_one_sided": 0.004999500049995001,
+            "circular_shift_p_one_sided": 0.003656307129798903
           },
           "20": {
             "steps": 547,
@@ -423,7 +456,8 @@
             "exposure": 1.0,
             "trades": 459.0,
             "hit_rate_when_invested": 0.5557586837294333,
-            "permutation_p_one_sided": 0.004899510048995101
+            "permutation_p_one_sided": 0.004899510048995101,
+            "circular_shift_p_one_sided": 0.003656307129798903
           },
           "20": {
             "steps": 547,
@@ -482,6 +516,32 @@
             "hit_rate_when_invested": 0.48080438756855576
           }
         }
+      }
+    },
+    "exploratory_post_hoc": {
+      "primary": {
+        "spread": 0.0022693166134362753,
+        "spread_ci95_block_bootstrap": [
+          -0.0017435365738203074,
+          0.006080162556645904
+        ],
+        "spread_excluding_august_signals": 0.002746537832156658,
+        "spread_excluding_3_largest_steps": 0.0019037015291346391,
+        "share_strong_august": 0.7307692307692307,
+        "share_strong_other_months": 0.4161616161616162,
+        "gross_permutation_p": 0.14808519148085192
+      },
+      "diagnostic": {
+        "spread": 0.005259100164307767,
+        "spread_ci95_block_bootstrap": [
+          0.0007597650176688126,
+          0.010159164745172939
+        ],
+        "spread_excluding_august_signals": 0.005568638956068704,
+        "spread_excluding_3_largest_steps": 0.005720903650624025,
+        "share_strong_august": 0.7307692307692307,
+        "share_strong_other_months": 0.4161616161616162,
+        "gross_permutation_p": 0.0081991800819918
       }
     },
     "years": 3.7782340862423

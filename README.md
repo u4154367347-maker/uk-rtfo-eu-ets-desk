@@ -18,7 +18,7 @@ On the certificates issued so far (Jan to May 2026), main-type RTFCs look short:
 
 ![EUA backtest](docs/eua_backtest.png)
 
-Does strong demand at one EEX auction predict later auction prices? **No, not in a way you can trade.** Out of sample (2023 to Oct 2026) the tradable signal earns +2.4bp per auction after a 10bp cost against +2.2bp for always being long, with a permutation p-value of 0.116 against a pre-registered 0.05. It only looks good if you could buy at the auction price after seeing the result, which the data cannot show. Protocol (committed before the results), method and limits: [docs/eua_backtest.md](docs/eua_backtest.md).
+Does strong demand at one EEX auction predict later auction prices? **Not in a way I can show.** Out of sample (2023 to Oct 2026) the signal, entered one auction later so it has no look-ahead, earns +2.4bp per auction step after a 10bp cost against +2.2bp for always being long, with a permutation p-value of 0.116 against a pre-registered 0.05; the effect is inconclusive, not proven absent. It only looks strong if a position could be opened at the auction price after seeing the result, which the data cannot show. Protocol (fixed in an earlier commit than the results), method and limits: [docs/eua_backtest.md](docs/eua_backtest.md).
 
 ## How to run
 
