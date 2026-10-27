@@ -13,7 +13,7 @@ Numbers below come from [`data/processed/rtfo_monitor.json`](../data/processed/r
 
 **What would change this view**
 - Recorded 2025 redemptions and later 2026 issuance for periods 4-6 once they settle. The provisional files show no 2025 redemptions yet, so the 2025 close is modelled, not observed.
-- DfT explaining the 2024 gap below (it moves the 2026 balance by about 4 points of the obligation).
+- DfT explaining the 2024 gap below (it moves the 2026 balance by about 4 to 6 points of the obligation, depending on the demand case).
 - A price source better than one seller's average.
 
 ## 1. The 2024 gap

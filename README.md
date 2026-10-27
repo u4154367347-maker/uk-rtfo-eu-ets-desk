@@ -11,13 +11,13 @@ Public-data monitors for two compliance markets:
 
 ![RTFO monitor](docs/rtfo_monitor.png)
 
-On the certificates issued so far (Jan to May 2026), main-type RTFCs look short: -9% to -30% of the formula obligation. The price (19.1p in August 2026, 38% of the 50p cap, below a year earlier) does not look like a market that short, so either issuance is lagging or the obligation is lower than the formula implies, and the public data cannot tell which. DfT's own 2024 balance table also has an unexplained 328m-certificate gap. Method, assumptions and what would change the view: [docs/rtfo_monitor.md](docs/rtfo_monitor.md). Run it with `make monitor`.
+Unresolved, and possibly an artefact of reporting lag. On the certificates issued so far (Jan to May 2026), main-type RTFCs look short: -9% to -30% of the formula obligation, but 2026 periods are only about three months old while the 2025 comparison periods were read much later. The price (19.1p in August 2026, 38% of the 50p cap, below a year earlier) does not look like a market that short, so either issuance is lagging or the obligation is lower than the formula implies, and the public data cannot tell which. DfT's own 2024 balance table also has an unexplained 328m-certificate gap. Method, assumptions and what would change the view: [docs/rtfo_monitor.md](docs/rtfo_monitor.md). Run it with `make monitor`.
 
 ## Headline: EUA auction signal
 
 ![EUA backtest](docs/eua_backtest.png)
 
-Does strong demand at one EEX auction predict later auction prices? **Not in a way I can show.** Out of sample (2023 to Oct 2026) the signal, entered one auction later so it has no look-ahead, earns +2.4bp per auction step after a 10bp cost against +2.2bp for always being long, with a permutation p-value of 0.116 against a pre-registered 0.05; the effect is inconclusive, not proven absent. It only looks strong if a position could be opened at the auction price after seeing the result, which the data cannot show. Protocol (fixed in an earlier commit than the results), method and limits: [docs/eua_backtest.md](docs/eua_backtest.md).
+Does strong demand at one EEX auction predict later auction prices? **Not in a way I can show.** Out of sample (2023 to Oct 2026) the signal, entered one auction later so it has no look-ahead, earns +2.4bp per auction step after a 10bp cost against +2.2bp for always being long, with a permutation p-value of 0.116 against a pre-registered 0.05; the effect is inconclusive, not proven absent. It only looks strong if a position could be opened at the auction price after seeing the result, which the data cannot show. The protocol was written before the results were computed, but the squashed history here cannot show that order, so treat it as stated, not verifiable. Method and limits: [docs/eua_backtest.md](docs/eua_backtest.md).
 
 ## How to run
 
@@ -41,7 +41,6 @@ make test      # or: python -m pytest
 |---|---|---|---|---|
 | [RTFO statistics data tables (RF_01)](https://www.gov.uk/government/statistical-data-sets/renewable-transport-fuel-obligation-rtfo-statistics-data-tables) | UK Department for Transport | 2024 final (revised), 2025 fifth provisional, 2026 first provisional | ODS | Free, no account |
 | [EEX EUA primary auction results](https://www.eex.com/en/market-data/market-data-hub/environmentals-data) | European Energy Exchange | History 2012-2025 (zip of yearly workbooks) and the current-year workbook | XLS/XLSX | Free, no account |
-
 | [ReFuels monthly "Biomethane Station Data" press releases](https://refuels.com/news/) | ReFuels | Sep 2025 - Aug 2026 (11 releases) | CSV, curated by hand | Free; no download, read from the press release |
 
 

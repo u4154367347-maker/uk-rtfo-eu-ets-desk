@@ -1,7 +1,7 @@
 # EUA auction backtest: does strong auction demand predict later auction prices?
 
 Data: EEX EUA primary auctions on the EU common platform, 1,948 auctions from 2012-11-13 to 2026-10-22 (country `EU`, contract `T3PA` as coded by EEX, cancelled auctions dropped).
-Protocol: [`config/backtest.yaml`](../config/backtest.yaml), committed in an earlier commit than the code and not changed since. Results: [`data/processed/eua_backtest.json`](../data/processed/eua_backtest.json), built by `python -m desk.backtest`.
+Protocol: [`config/backtest.yaml`](../config/backtest.yaml), written before the results were computed (the squashed history on main cannot show that order). The only later change is that the out-of-sample end date was frozen at 2026-10-22, the last auction at the time, so new auctions do not alter the results. Results: [`data/processed/eua_backtest.json`](../data/processed/eua_backtest.json), built by `python -m desk.backtest`.
 
 ![EUA backtest](eua_backtest.png)
 
@@ -30,17 +30,17 @@ If a position could be opened at the auction price **after** seeing that auction
 
 ## Robustness checks (added after review, post hoc, not part of the decision)
 
-- **Permutation test is not like for like.** Free shuffles produce about 270 trades against 229 for the real signal, which flatters the p-value. Without costs the shuffle p is 0.148 for the delayed version; against circular shifts of the real positions (same trade count and persistence) it is 0.144. The conclusion does not change. The look-ahead version stays significant under both (0.008 and 0.004).
+- **Permutation test is not like for like.** Free shuffles produce about 270 trades (mean of 1,000 shuffles, stored in the JSON) against 229 for the real signal, which flatters the p-value. Without costs the shuffle p is 0.148 for the delayed version; against circular shifts of the real positions (same trade count and persistence) it is 0.144. The conclusion does not change. The look-ahead version stays significant under both (0.008 and 0.004).
 - **August.** Auction volume is cut in August, which mechanically raises the cover ratio: 73% of August signals out of sample are "strong" against 42% in other months. Dropping signals from August leaves the delayed spread at +27bp and the look-ahead spread at +56bp.
 - **Largest steps.** Dropping the 3 largest absolute steps leaves the spreads at +19bp (delayed) and +57bp (look-ahead).
-- **Persistence.** The rank correlation between relative cover ratio and the next step's return is 0.125 out of sample, and 0.001 for the step after. Whatever the signal carries is gone one auction later.
+- **Persistence.** Out of sample, the rank correlation between relative cover ratio and the return of the step starting at the same auction is 0.126 (the look-ahead timing). For the step starting one auction later (the delayed timing) it is -0.004, and two auctions later 0.047. Whatever the signal carries is gone one auction later.
 
 ## Limits
 
 - **Not confirmed:** whether the one-step effect is market information or auction-price timing noise. Both fit the data.
 - **Not confirmed:** the 10bp cost, and whether cover ratio or price are ever revised after publication. The result is shown at 0, 5, 10 and 20bp.
-- Pre-registration only goes as far as git history: the config was committed before the code and results, but the data already existed, and before fixing the protocol I had looked at yearly average cover ratios and prices (not at returns against the signal). The 2023 cut-off was chosen as the calendar year after a five-year in-sample window; I have not checked whether it matters.
-- About 8 variants and 4 p-values are reported (2 timings x 2 positions, 2 periods), with no multiple-testing correction. Only one p-value is on the decision path.
+- Pre-registration is stated, not verifiable: the config was written before the code and results, but the history on main is squashed, the data already existed, and before fixing the protocol I had looked at yearly average cover ratios and prices (not at returns against the signal). The 2023 cut-off was chosen as the calendar year after a five-year in-sample window; I have not checked whether it matters.
+- Roughly 20 p-values are stored in the JSON (permutation, circular-shift and gross permutation, for 2 timings, 2 positions and 2 periods), with no multiple-testing correction. Only one is on the decision path.
 - Steps are irregular (1 to 4 days, and about 3 weeks around Christmas), so "per auction" is not "per day", and the annualised Sharpe is approximate.
 - One signal, one lookback (60 auctions), fixed beforehand; no variant was tried and dropped. EU common platform EUAs only; aviation (EAA) and other countries are excluded.
 - Next step if pursued: a free secondary-price series to test a real entry and exit. Not started.

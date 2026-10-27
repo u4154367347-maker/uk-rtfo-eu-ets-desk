@@ -1,6 +1,7 @@
 # Pre-registered protocol for the EUA auction backtest.
-# Committed BEFORE any signal, position or return was computed (see git history). Nothing below is
-# tuned on data; change it only by a new commit that says why, and report the change in the write-up.
+# Written before any signal, position or return was computed. The squashed history on main does not show
+# that order, so this is a stated commitment, not a verifiable one. Nothing below is tuned on data; the
+# robustness checks in docs/eua_backtest.md were added after seeing results and are labelled post hoc.
 #
 # Question: does strong demand at one EEX EUA primary auction (cover ratio) say anything about the
 # price path over the following auctions, once costs are included?
@@ -13,8 +14,8 @@ universe:
 
 periods:
   in_sample: {start: 2018-01-01, end: 2022-12-31}    # context only; no parameter is fitted on it
-  out_of_sample: {start: 2023-01-01, end: latest}    # fixed now; 'latest' = last auction in the committed table
-  note: the out-of-sample period is judged once. No second look after changing the signal.
+  out_of_sample: {start: 2023-01-01, end: 2026-10-22}  # was 'latest' (= this same auction); frozen so new auctions do not change the results
+  note: the pre-registered decision uses the out-of-sample period once; the signal was not changed after seeing it.
 
 signal:
   name: relative_cover_ratio
