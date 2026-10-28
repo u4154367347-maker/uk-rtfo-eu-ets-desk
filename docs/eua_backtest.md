@@ -20,6 +20,8 @@ Protocol: [`config/backtest.yaml`](../config/backtest.yaml), written before the 
 | Signal long/flat, 20bp | -0.098 | -0.13 | -35% |
 | Signal long/short, 10bp (secondary) | +0.141 | 0.12 | -32% |
 
+**Break-even cost.** The delayed long/flat signal stops beating always-long at about 10.5bp per unit of position change (long/short: 10.5bp; stored in the JSON). The assumed 10bp headline sits right at that edge, so the 0.2bp margin in the next paragraph is not robust to the cost assumption: at 20bp the signal loses. A real transaction cost would have to be known to be well below 10bp before the signal could matter.
+
 Pre-registered decision rule, all three needed: net mean per step above always long (yes, by 0.2bp, which is not a meaningful difference), permutation p below 0.05 (**no**, 0.116), drawdown no worse than always long (yes, but the signal is invested only 45% of the time, so this check is nearly free). Verdict: not useful.
 
 **Inconclusive, not proven absent.** After strong demand the next step averages +14.8bp, otherwise -7.9bp, a spread of 22.7bp. A block-bootstrap 95% interval for that spread is -17bp to +61bp, so the data cannot rule out a real effect of that size either. The signal wins 48% of its invested steps. In sample (2018-2022) it also fails (p = 0.147) and underperforms always-long (+1.25 vs +2.26 total log return at 10bp) in a rising market.
