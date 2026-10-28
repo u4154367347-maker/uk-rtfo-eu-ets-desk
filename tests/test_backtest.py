@@ -130,3 +130,21 @@ def test_real_data_pinned_values():
     assert strat["trades"] == 229 and strat["exposure"] == pytest.approx(0.45, abs=0.01)
     assert strat["permutation_p_one_sided"] > 0.05
     assert r["verdict_out_of_sample"]["signal_useful"] is False
+
+
+def test_auctions_after_the_frozen_cutoff_do_not_change_the_results(tmp_path):
+    raw = backtest.pd.read_parquet(backtest.AUCTIONS_PATH)
+    extra = raw[raw["country"] == "EU"].tail(1).copy()
+    extra["date"] = backtest.pd.Timestamp("2026-12-01")
+    extra["price_eur"] = extra["price_eur"] * 3
+    path = tmp_path / "auctions.parquet"
+    backtest.pd.concat([raw, extra], ignore_index=True).to_parquet(path)
+    assert backtest.build_backtest(path)["data"] == json.loads(backtest.OUTPUT_PATH.read_text())["data"]
+
+
+def test_exploratory_fields_are_stored_and_the_shuffle_trade_count_exceeds_the_real_one():
+    oos = json.loads(backtest.OUTPUT_PATH.read_text())["out_of_sample"]
+    ex = oos["exploratory_post_hoc"]
+    real_trades = oos["results"]["primary/long_flat"]["by_cost_bps"]["10"]["trades"]
+    assert ex["primary"]["shuffle_mean_trades"] > real_trades
+    assert set(ex["rank_corr_relative_cover_with_return"]) == {f"signal_{k}_auctions_before_the_step" for k in (0, 1, 2)}

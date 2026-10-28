@@ -259,7 +259,8 @@
         "spread_excluding_3_largest_steps": 0.003193120193498639,
         "share_strong_august": 0.9523809523809523,
         "share_strong_other_months": 0.41017488076311603,
-        "gross_permutation_p": 0.21287871212878712
+        "gross_permutation_p": 0.21287871212878712,
+        "shuffle_mean_trades": 344.242
       },
       "diagnostic": {
         "spread": 0.002356605297134038,
@@ -271,7 +272,13 @@
         "spread_excluding_3_largest_steps": 0.0030698807438535335,
         "share_strong_august": 0.9523809523809523,
         "share_strong_other_months": 0.41017488076311603,
-        "gross_permutation_p": 0.21797820217978203
+        "gross_permutation_p": 0.21797820217978203,
+        "shuffle_mean_trades": 344.035
+      },
+      "rank_corr_relative_cover_with_return": {
+        "signal_0_auctions_before_the_step": 0.04553777441658994,
+        "signal_1_auctions_before_the_step": 0.0262187781974936,
+        "signal_2_auctions_before_the_step": -0.01659867858060914
       }
     },
     "years": 4.944558521560575
@@ -529,7 +536,8 @@
         "spread_excluding_3_largest_steps": 0.0019037015291346391,
         "share_strong_august": 0.7307692307692307,
         "share_strong_other_months": 0.4161616161616162,
-        "gross_permutation_p": 0.14808519148085192
+        "gross_permutation_p": 0.14808519148085192,
+        "shuffle_mean_trades": 270.264
       },
       "diagnostic": {
         "spread": 0.005259100164307767,
@@ -541,7 +549,13 @@
         "spread_excluding_3_largest_steps": 0.005720903650624025,
         "share_strong_august": 0.7307692307692307,
         "share_strong_other_months": 0.4161616161616162,
-        "gross_permutation_p": 0.0081991800819918
+        "gross_permutation_p": 0.0081991800819918,
+        "shuffle_mean_trades": 270.552
+      },
+      "rank_corr_relative_cover_with_return": {
+        "signal_0_auctions_before_the_step": 0.12559574977531343,
+        "signal_1_auctions_before_the_step": -0.004396813852448755,
+        "signal_2_auctions_before_the_step": 0.04686086700787583
       }
     },
     "years": 3.7782340862423

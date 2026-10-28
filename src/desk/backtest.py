@@ -132,8 +132,19 @@ def exploratory(window: pd.DataFrame, series: pd.DataFrame, cfg: dict) -> dict:
             "spread_excluding_3_largest_steps": spread(ret[~big], pos[~big]),
             "share_strong_august": float((pos[august] > 0).mean()), "share_strong_other_months": float((pos[not_august] > 0).mean()),
             "gross_permutation_p": permutation_p(ret, pos, 0, perm["draws"], perm["seed"]),
+            "shuffle_mean_trades": shuffle_mean_trades(pos, 1000, perm["seed"]),
         }
+    out["rank_corr_relative_cover_with_return"] = {
+        f"signal_{lag}_auctions_before_the_step": float(series["relative_cover"].shift(lag).loc[window.index].rank().corr(window["step_return"].rank()))
+        for lag in (0, 1, 2)
+    }
     return out
+
+
+def shuffle_mean_trades(pos: np.ndarray, draws: int, seed: int) -> float:
+    """Average number of position changes (the first entry counts) in free shuffles of the positions."""
+    rng = np.random.default_rng(seed)
+    return float(np.mean([np.abs(np.diff(rng.permutation(pos), prepend=0.0)).sum() for _ in range(draws)]))
 
 
 def evaluate(s: pd.DataFrame, start: str, end: str | None, cfg: dict) -> dict:
@@ -187,8 +198,12 @@ def verdict(oos: dict, head: int) -> dict:
 
 def build_backtest(auctions_path: Path = AUCTIONS_PATH, cfg_path: Path = CONFIG_PATH) -> dict:
     cfg = yaml.safe_load(cfg_path.read_text())
-    series = add_signal(load_series(pd.read_parquet(auctions_path)), cfg["signal"]["lookback_auctions"])
     ps = cfg["periods"]
+    series = load_series(pd.read_parquet(auctions_path))
+    cutoff = ps["out_of_sample"]["end"]
+    if cutoff != "latest":  # later auctions are ignored, so a refreshed table does not change the committed results
+        series = series[series["date"] <= str(cutoff)].reset_index(drop=True)
+    series = add_signal(series, cfg["signal"]["lookback_auctions"])
     ins = evaluate(series, str(ps["in_sample"]["start"]), str(ps["in_sample"]["end"]), cfg)
     oos = evaluate(series, str(ps["out_of_sample"]["start"]), None, cfg)
     return {
