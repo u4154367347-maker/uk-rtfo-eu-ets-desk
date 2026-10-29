@@ -148,3 +148,12 @@ def test_exploratory_fields_are_stored_and_the_shuffle_trade_count_exceeds_the_r
     real_trades = oos["results"]["primary/long_flat"]["by_cost_bps"]["10"]["trades"]
     assert ex["primary"]["shuffle_mean_trades"] > real_trades
     assert set(ex["rank_corr_relative_cover_with_return"]) == {f"signal_{k}_auctions_before_the_step" for k in (0, 1, 2)}
+
+
+def test_break_even_cost_matches_the_grid():
+    oos = json.loads(backtest.OUTPUT_PATH.read_text())["out_of_sample"]
+    be = oos["break_even_cost_bps_vs_always_long"]["primary/long_flat"]
+    res = oos["results"]
+    gap = lambda c: res["primary/long_flat"]["by_cost_bps"][c]["mean_per_auction"] - res["always_long"]["by_cost_bps"][c]["mean_per_auction"]
+    assert gap("5") > 0 and gap("20") < 0 and 5 < be < 20  # the sign change lies between the grid points
+    assert gap("10") * (be - 10) > 0  # on the side of 10bp that the break-even implies

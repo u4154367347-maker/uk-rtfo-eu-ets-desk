@@ -179,8 +179,20 @@ def evaluate(s: pd.DataFrame, start: str, end: str | None, cfg: dict) -> dict:
     long_pos = np.ones(len(ret))
     results["always_long"] = {"by_cost_bps": {str(c): metrics(run(ret, long_pos, c), long_pos, ret, years) for c in grid}}
     out["results"] = results
+    out["break_even_cost_bps_vs_always_long"] = break_even_cost_bps(results, str(grid[0]))
     out["exploratory_post_hoc"] = exploratory(window, s, cfg)
     out["years"] = years
+    return out
+
+
+def break_even_cost_bps(results: dict, zero_key: str) -> dict:
+    """Cost per unit position change at which each primary variant's net mean falls to always-long's (zero-cost grid point)."""
+    base = results["always_long"]["by_cost_bps"][zero_key]["mean_per_auction"]
+    out = {}
+    for name in ("primary/long_flat", "primary/long_short"):
+        m = results[name]["by_cost_bps"][zero_key]
+        steps_per_trade_unit = m["trades"] / m["steps"]  # position changes per step at 0bp: trades column counts units
+        out[name] = float((m["mean_per_auction"] - base) / (steps_per_trade_unit / 1e4)) if steps_per_trade_unit else None
     return out
 
 

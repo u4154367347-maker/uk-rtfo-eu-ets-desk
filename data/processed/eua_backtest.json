@@ -248,6 +248,10 @@
         }
       }
     },
+    "break_even_cost_bps_vs_always_long": {
+      "primary/long_flat": -36.898857964223836,
+      "primary/long_short": -36.81364120218174
+    },
     "exploratory_post_hoc": {
       "primary": {
         "spread": 0.0024793322927345665,
@@ -524,6 +528,10 @@
           }
         }
       }
+    },
+    "break_even_cost_bps_vs_always_long": {
+      "primary/long_flat": 10.487341972570253,
+      "primary/long_short": 10.4644937329786
     },
     "exploratory_post_hoc": {
       "primary": {
