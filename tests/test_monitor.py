@@ -111,23 +111,53 @@ def test_scenario_demand_factor_scales_the_main_obligation_only():
     assert half["development_target"] == pytest.approx(full["development_target"])
 
 
-def _issued(by_year: dict[int, list[float]]):
-    rows = [("r1", "2026-09-03", year, "rtfcs_issued", "General", i, v, False)
-            for year, values in by_year.items() for i, v in enumerate(values)]
+def _issued(by_year: dict[int, list[float]], share_by_year: dict[int, list[float]] | None = None):
+    """Main-type issuance per supply period, plus the RF_0102 volume columns that give the certificated share."""
+    rows = []
+    for year, values in by_year.items():
+        shares = (share_by_year or {}).get(year, [1.0] * len(values))
+        for i, v in enumerate(values):
+            rows.append(("r1", "2026-09-03", year, "rtfcs_issued", "General", i, v, False))
+            rows.append(("r1", "2026-09-03", year, "renewable_volume_total", "Total", i, 100.0, True))
+            rows.append(("r1", "2026-09-03", year, "volume_with_rtfcs", "Total", i, 100.0 * shares[i], True))
     return pd.DataFrame(rows, columns=["release", "data_as_of", "obligation_period", "measure", "rtfc_category",
                                        "supply_period_index", "value", "is_total"])
 
 
-def test_issuance_growth_stops_at_the_first_period_far_below_last_year():
-    c = _issued({2025: [10.0] * 13, 2026: [8.0, 8.0, 8.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]})
+def test_issuance_growth_adjusts_for_fuel_not_yet_certificated():
+    # 2026 looks 20% down, but only 80% of its fuel has certificates: per certificated litre nothing changed.
+    c = _issued({2025: [10.0] * 13, 2026: [8.0] * 7 + [0.0] * 6}, {2026: [0.8] * 7 + [0.0] * 6})
+    g = monitor.issuance_growth(c, 2026, 2025, max_period=6)
+    assert g["raw_growth"] == pytest.approx(-0.2)
+    assert g["lag_adjusted_growth"] == pytest.approx(0.0)
+    assert g["raw_comparable"] is False
+
+
+def test_issuance_growth_stops_where_too_little_fuel_is_certificated():
+    shares = [0.9, 0.9, 0.9, 0.4] + [0.0] * 9
+    c = _issued({2025: [10.0] * 13, 2026: [9.0, 9.0, 9.0, 4.0] + [0.0] * 9}, {2026: shares})
     g = monitor.issuance_growth(c, 2026, 2025, max_period=6)
     assert g["periods_compared"] == "0..2"
-    assert g["growth"] == pytest.approx(-0.2)
+    assert g["lag_adjusted_growth"] == pytest.approx(0.0)
 
 
 def test_issuance_growth_respects_max_period():
     c = _issued({2025: [10.0] * 13, 2026: [11.0] * 13})
-    assert monitor.issuance_growth(c, 2026, 2025, max_period=4)["periods_compared"] == "0..4"
+    g = monitor.issuance_growth(c, 2026, 2025, max_period=4)
+    assert g["periods_compared"] == "0..4"
+    assert g["raw_comparable"] is True and g["raw_growth"] == pytest.approx(g["lag_adjusted_growth"])
+
+
+def test_completeness_factor_is_the_ratio_of_full_year_certificated_shares():
+    c = _issued({2024: [10.0] * 13, 2025: [10.0] * 13}, {2024: [1.0] * 13, 2025: [0.8] * 13})
+    assert monitor.completeness_factor(c, 2025, 2024) == pytest.approx(1.25)
+
+
+def test_base_scale_raises_2025_supply_in_both_years():
+    b = _balances([(2025, "Issued", "General", 100.0), (2025, "Revoked", "General", 0.0)])
+    v = _volumes({2025: [100.0] * 13, 2026: [100.0] * 7 + [0.0] * 6})
+    assert monitor.close_2025(b, v, CFG, 0.0, 1.0, 1.1)["net_issued_main"] == pytest.approx(110.0)
+    assert monitor.scenario_2026(b, v, CFG, 0.0, 0.0, 1.0, 1.1)["main_supply"] == pytest.approx(110.0)
 
 
 def test_committed_monitor_json_is_not_stale():
@@ -138,11 +168,16 @@ def test_real_data_pinned_values():
     """Hand-checked against the source tables, so a logic change cannot be hidden by regenerating the JSON."""
     m = json.loads(monitor.OUTPUT_PATH.read_text())
     assert m["close_2025"]["published/formula"]["obligated_amount"] == pytest.approx(45512.2, abs=0.1)
-    assert m["close_2025"]["published/formula"]["net_issued_main"] == pytest.approx(5402.3, abs=0.1)
+    assert m["inputs"]["net_issued_main_2025_published"] == pytest.approx(5402.3, abs=0.1)
+    assert m["inputs"]["completeness_factor_2025"] == pytest.approx(1.078, abs=0.001)
     assert m["calibration_2024"]["redeemed_over_formula"] == pytest.approx(0.908, abs=0.001)
     assert m["calibration_2024"]["redeemed_over_formula_excluding_lsgo"] == pytest.approx(0.957, abs=0.001)
     assert m["inputs"]["issuance_growth_2026_vs_2025"]["periods_compared"] == "0..3"
-    assert m["inputs"]["issuance_growth_2026_vs_2025"]["growth"] == pytest.approx(-0.158, abs=0.001)
+    g = m["inputs"]["issuance_growth_2026_vs_2025"]
+    assert g["raw_growth"] == pytest.approx(-0.158, abs=0.001)          # lag artefact, kept for the record
+    assert g["lag_adjusted_growth"] == pytest.approx(0.157, abs=0.001)
+    assert g["certificated_share"] == pytest.approx({"2026": 0.704, "2025": 0.932}, abs=0.001)
+    assert g["raw_comparable"] is False
     assert len(m["scenarios_2026"]) == 12
 
 

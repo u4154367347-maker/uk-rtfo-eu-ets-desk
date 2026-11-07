@@ -7,13 +7,16 @@ Numbers below come from [`data/processed/rtfo_monitor.json`](../data/processed/r
 
 ## Short answer (a hypothesis, not a forecast)
 
-**On the certificates issued so far, 2026 main-type RTFCs look short: -8.8% to -29.9% of the formula obligation across the four cases built on observed issuance.** Certificate issuance for supply periods 0-3 (Jan to May) is 15.8% below 2025, even though renewable fuel supplied over the same window is up about 17%. Fewer certificates per litre is the opposite of what a volume-based supply forecast assumes, so that forecast is shown only as an upper bound.
+**Once issuance lag is removed, the public data show no 2026 main-type deficit: the balance is -5% to +35% of the obligation across the 12 cases, and +9% to +35% in the case built on issuance so far.** That fits the price: the ReFuels average was 19.1p in Aug 2026, 38% of the 50p cap and below the 24.9p of Aug 2025.
 
-**The price does not look like a market that short.** The ReFuels average was 19.1p in Aug 2026 (38% of the 50p cap), below the 24.9p of Aug 2025 and below the 25-26p ReFuels says it sold its 2026 volume forward at. A deficit of 10-30% would normally be expected to lift prices, not lower them. Two explanations fit the data and I cannot separate them: (a) 2026 issuance is lagging (early periods may be less complete than their 2025 counterparts, which were read about six months after year end), or (b) suppliers need fewer certificates than the formula implies (in 2024 they redeemed 90.8% of the formula figure; 95.7% if low sulphur gas oil is left out of the base). If (a), the observed-issuance cases overstate the deficit; if (b), the formula cases do.
+**Why an earlier version of this page said "short", and why that was wrong.** Raw main-type issuance for supply periods 0-3 (1 Jan to 14 Apr) is 15.8% below 2025. But DfT's own RF_0102 says only 70% of 2026 renewable fuel in those periods has had certificates issued so far (53% in period 3), against 93% for the same 2025 periods. Per certificated litre, issuance is unchanged (1.72 main RTFCs per litre in both years). Scaled to all the fuel supplied, issuance is **+15.7%**, in line with renewable fuel supplied (+16.8% over the same periods). The -15.8% is reporting lag, not a supply drop; it is kept in the JSON as `raw_growth` with `raw_comparable: false`.
+
+**The 2025 base is incomplete too.** The 2025 fifth provisional release has certificates for 92.0% of 2025 renewable fuel; the 2024 final release reached 99.2%. The model scales 2025 net main-type issuance (5,402.3 as published) by 99.2/92.0 = 1.078, to 5,825.5. Without that scaling the issuance-based case is -3.8% to +19.9%: still no clear deficit.
 
 **What would change this view**
-- Recorded 2025 redemptions and later 2026 issuance for periods 4-6 once they settle. The provisional files show no 2025 redemptions yet, so the 2025 close is modelled, not observed.
-- DfT explaining the 2024 gap below (it moves the 2026 balance by about 4 to 6 points of the obligation, depending on the demand case).
+- Later 2026 releases: if certificates for the remaining 30% of fuel in periods 0-3 come in below the rate seen so far (certificates per litre falling), the adjusted case is too high.
+- Recorded 2025 redemptions. The provisional files show none yet, so the 2025 close is modelled, not observed.
+- DfT explaining the 2024 gap below (it moves the 2026 balance by about 5 points of the obligation).
 - A price source better than one seller's average.
 
 ## 1. The 2024 gap
@@ -43,30 +46,30 @@ Obligation = percentage x obligated amount (DfT guidance paras 3.5-3.8, Table 1)
 
 ## 3. 2025 close (modelled)
 
-Supply = 2025 net main-type issuance (5,402.3) + 2024 leftover, with carry-over capped at 25% of the obligation.
+Supply = 2025 net main-type issuance scaled for fuel not yet certificated (5,402.3 x 1.078 = 5,825.5) + 2024 leftover, with carry-over capped at 25% of the obligation.
 
 | Demand | 2024 leftover | Obligation | Balance | Carried into 2026 |
 |---|---|---|---|---|
-| Formula | published (1,234) | 6,396.3 | +239.9 (+3.8%) | 239.9 |
-| Formula | implied (906) | 6,396.3 | -88.1 (-1.4%) | 0 |
-| x0.908 | published | 5,809.0 | +827.2 | 827.2 |
-| x0.908 | implied | 5,809.0 | +499.2 | 499.2 |
+| Formula | published (1,234) | 6,396.3 | +663.1 (+10.4%) | 663.1 |
+| Formula | implied (906) | 6,396.3 | +335.1 (+5.2%) | 335.1 |
+| x0.908 | published | 5,809.0 | +1,250.4 (+21.5%) | 1,250.4 |
+| x0.908 | implied | 5,809.0 | +922.4 (+15.9%) | 922.4 |
 
 Only 2025-issued certificates can carry into 2026; 2024 ones expire after the 2025 obligation. The 25% cap applies to a supplier's own obligation (guidance paras 3.12 and 5.40), but the model applies it to the market total, which is generous to supply.
 
 ## 4. 2026 scenarios (12 cases)
 
-Obligation: 14.552% x 2025 fossil volume x (1 - 1.9%), the year-to-date change in fossil supply (supply periods 0-6). Formula obligation 6,497; calibrated obligation 5,900. Three supply cases for 2025 main-type issuance (5,402.3):
+Obligation: 14.552% x 2025 fossil volume x (1 - 1.9%), the year-to-date change in fossil supply (supply periods 0-6). Formula obligation 6,497; calibrated obligation 5,900. Three supply cases on the adjusted 2025 main-type issuance (5,825.5):
 
 | Supply case | Main supply | Balance range across the 4 demand/leftover combinations |
 |---|---|---|
-| Observed issuance so far (-15.8%) | 4,551 | -8.8% to -29.9% |
-| Flat vs 2025 | 5,402 | -16.8% to +5.6% |
-| Upper bound: 2025 certificates per litre on 2026 volumes (+14.8%) | 6,200 | -4.6% to +19.1% |
+| Issuance so far, adjusted for fuel not yet certificated (+15.7%) | 6,739 | +8.9% to +35.4% |
+| 2025 certificates per litre on 2026 renewable volumes (+14.8%, periods 0-6) | 6,686 | +8.1% to +34.5% |
+| Downside: flat vs 2025 | 5,826 | -5.2% to +19.9% |
 
-These are corner cases, not a confidence interval; they are correlated and the supply upper bound is contradicted by the issuance seen so far. The observed-issuance row is the one with data behind it, and it is the one most exposed to issuance lag. A main deficit costs at most the 50p buy-out, up to about GBP 973m in the worst case.
+These are corner cases, not a confidence interval; they are correlated. The first two agree because the adjusted issuance and the volume growth measure the same thing. Only the downside case with the formula obligation shows a deficit, worth at most about GBP 168m at the 50p buy-out.
 
-**Development:** the 2026 target is 832 dRTFC (1.863% of the obligated amount). Supply is held at the 2025 level of 263, because year-to-date development volumes are too lumpy to scale. The shortfall of 569 is met by buy-out at 80p, about GBP 455m. In 2024 the target was about 630 and 142 net certificates were issued, so roughly three quarters went to buy-out. dRTFCs can also meet the main obligation (guidance para 3.22), but with the development target unmet each dRTFC avoids an 80p buy-out against 50p for a main certificate, so the model keeps them for the development target.
+**Development (modelled):** the 2026 target is 832 dRTFC (1.863% of the obligated amount). Supply is held at the published 2025 level of 263, because year-to-date development volumes are too lumpy to scale, and it is not scaled for lag, so the shortfall of 569 (about GBP 455m at the 80p buy-out) is an upper estimate. In 2024 the target was about 630 and 142 net certificates were issued, so roughly three quarters went to buy-out. dRTFCs can also meet the main obligation (guidance para 3.22), but with the development target unmet each dRTFC avoids an 80p buy-out against 50p for a main certificate, so the model keeps them for the development target.
 
 ## 5. Price
 
@@ -75,6 +78,6 @@ ReFuels average RTFC price: 19.1p in Aug 2026 (24.9p in Aug 2025), 38% of the 50
 ## Limits
 
 - Fossil volume stands in for the obligated amount; 2025 and 2026 volumes are provisional.
-- Observed 2026 issuance covers only Jan to May and may be incomplete; issuance for a period can be claimed later.
+- Issuance so far covers supply periods 0-3 (1 Jan to 14 Apr). The lag adjustment assumes fuel not yet certificated earns certificates at the same rate per litre as fuel already certificated; supply periods run from the 15th to the 14th.
 - The relevant-crop cap (3.00%) is recorded in the config but not modelled.
 - Aggregate carry-over and aggregate redemption ignore who holds the certificates (non-obligated holders cannot redeem).
