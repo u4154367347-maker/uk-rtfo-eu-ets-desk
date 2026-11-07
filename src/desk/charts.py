@@ -17,8 +17,9 @@ from desk.io import REPO_ROOT
 from desk.monitor import OUTPUT_PATH, REFUELS_CSV
 
 CHART_PATH = REPO_ROOT / "docs" / "rtfo_monitor.png"
-SUPPLY_LABELS = {"observed_issuance": "Certificate issuance as\nobserved so far (Jan-May)", "flat": "Certificate supply flat\nvs 2025",
-                 "volume_growth_upper_bound": "Upper bound: 2025 certificates\nper litre on 2026 volumes"}
+SUPPLY_LABELS = {"issuance_lag_adjusted": "Issuance so far (1 Jan-14 Apr),\nadjusted for fuel not yet certificated",
+                 "renewable_volume_growth": "2025 certificates per litre\non 2026 volumes",
+                 "flat": "Downside: supply flat\nvs 2025"}
 DEMAND = {"formula": ("Obligation = formula", "#1b6ca8"), "calibrated_to_2024": ("Obligation x 2024 redeemed/formula ratio", "#d95f02")}
 
 
@@ -37,7 +38,7 @@ def build_chart(monitor: dict, prices: pd.DataFrame):
     ax1.set_yticks(list(ypos.values()), [SUPPLY_LABELS[k] for k in ypos])
     ax1.invert_yaxis()
     ax1.set_xlabel("2026 main-type RTFC balance, % of obligation (negative = short)")
-    ax1.set_title("2026 main-type RTFCs: short on certificates issued so far", loc="left", fontsize=11)
+    ax1.set_title("2026 main-type RTFCs: no deficit once issuance lag is removed", loc="left", fontsize=11)
     ax1.legend(loc="upper left", bbox_to_anchor=(0.0, -0.17), fontsize=8, frameon=False)
     ax1.text(0.0, -0.36, "Bar spans the unexplained 2024 gap: left end = 2024 leftover implied by flows, right end = as published by DfT.",
              transform=ax1.transAxes, fontsize=7.5, color="#555")

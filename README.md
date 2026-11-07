@@ -11,7 +11,7 @@ Public-data monitors for two compliance markets:
 
 ![RTFO monitor](docs/rtfo_monitor.png)
 
-Unresolved, and possibly an artefact of reporting lag. On the certificates issued so far (Jan to May 2026), main-type RTFCs look short: -9% to -30% of the formula obligation, but 2026 periods are only about three months old while the 2025 comparison periods were read much later. The price (19.1p in August 2026, 38% of the 50p cap, below a year earlier) does not look like a market that short, so either issuance is lagging or the obligation is lower than the formula implies, and the public data cannot tell which. DfT's own 2024 balance table also has an unexplained 328m-certificate gap. Method, assumptions and what would change the view: [docs/rtfo_monitor.md](docs/rtfo_monitor.md). Run it with `make monitor`.
+No deficit visible once reporting lag is removed. Raw 2026 main-type certificate issuance for 1 Jan to 14 Apr is 15.8% below 2025, but DfT's own tables show only 70% of that fuel has been certificated so far, against 93% a year earlier. Per certificated litre nothing changed, and scaled to all fuel supplied issuance is up 15.7%, in line with renewable volumes. On that basis the 2026 main-type balance is -5% to +35% of the obligation across 12 cases (+9% to +35% on issuance so far), which fits a price of 19.1p in August 2026, 38% of the 50p cap and below a year earlier. DfT's own 2024 balance table has an unexplained 328m-certificate gap. Method, assumptions and what would change the view: [docs/rtfo_monitor.md](docs/rtfo_monitor.md). Run it with `make monitor`.
 
 ## Headline: EUA auction signal
 
@@ -33,7 +33,7 @@ make data      # or: python -m desk.pipeline
 make test      # or: python -m pytest
 ```
 
-`make data` downloads each file listed in [`config/sources.yaml`](config/sources.yaml), checks it against a pinned SHA-256, and stops if gov.uk has replaced the file. Downloaded files are cached in `data/raw/` (not committed). What was downloaded, from where and when is written to [`data/provenance.json`](data/provenance.json).
+`make data` downloads each file listed in [`config/sources.yaml`](config/sources.yaml), checks it against a pinned SHA-256 (except the current-year EEX workbook, see below), and stops if gov.uk has replaced the file. Downloaded files are cached in `data/raw/` (not committed). What was downloaded, from where and when is written to [`data/provenance.json`](data/provenance.json).
 
 ## Data sources
 
